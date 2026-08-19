@@ -372,6 +372,11 @@ h2 {
 }
 
 </style>
+  <script
+    data-goatcounter="https://mchow.goatcounter.com/count"
+    async
+    src="https://gc.zgo.at/count.js"
+  ></script>
 </head>
 <body>
   <main class="app-shell">
@@ -744,6 +749,22 @@ const ui = {
 let lastUpdatedAt = null;
 let advisorHistory = [];
 let usageRecords = [];
+
+function trackAnalyticsEvent(path, title) {
+  if (!window.goatcounter || typeof window.goatcounter.count !== "function") {
+    return;
+  }
+
+  try {
+    window.goatcounter.count({
+      path,
+      title,
+      event: true,
+    });
+  } catch (_error) {
+    // Analytics must never block product usage.
+  }
+}
 
 function parseNumber(value) {
   const normalized = Number(value);
@@ -1179,6 +1200,9 @@ function analyzeTask() {
   ui.advisorRemaining.textContent = predictedRemaining === null ? "—" : formatPercent(predictedRemaining);
   ui.advisorProvider.textContent = route.provider;
   ui.advisorRoute.textContent = route.route;
+
+  trackAnalyticsEvent("advisor-used", "Advisor used");
+  trackAnalyticsEvent(`decision-${route.decision.toLowerCase()}`, `Decision ${route.decision}`);
 
   advisorHistory = [
     {
