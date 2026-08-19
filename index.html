@@ -352,7 +352,7 @@ textarea:focus {
 
           <label class="field">
             <span>Remaining %</span>
-            <input id="remainingPercent" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="48">
+            <input id="remainingPercent" type="number" min="0" max="100" step="1" inputmode="numeric" pattern="[0-9]*" placeholder="48">
           </label>
 
           <label class="field">
@@ -590,6 +590,19 @@ function syncStateToInputs() {
   fields.resetAt.value = state.resetAt || "";
 }
 
+function isResourceEditorOpen() {
+  return !ui.resourceEditor.classList.contains("hidden");
+}
+
+function readDraftResources() {
+  const draftRemaining = parseNumber(fields.remainingPercent.value);
+  return {
+    provider: fields.provider.value || state.provider || "ChatGPT",
+    remainingPercent: Number.isFinite(draftRemaining) ? clamp(draftRemaining, 0, 100) : null,
+    resetAt: fields.resetAt.value || "",
+  };
+}
+
 function maybeRollCycleForward() {
   if (!state.resetAt) return;
   const resetDate = new Date(state.resetAt);
@@ -608,25 +621,29 @@ function maybeRollCycleForward() {
 
 function renderResources() {
   maybeRollCycleForward();
-  syncStateToInputs();
-
-  ui.sourceDisplay.textContent = `${state.provider || "AI"} · Estimated`;
-  ui.remainingDisplay.textContent = Number.isFinite(state.remainingPercent) ? formatPercent(state.remainingPercent) : "Set";
-  ui.resetDisplay.textContent = state.resetAt ? formatDateTime(new Date(state.resetAt)) : "Set reset";
-
-  if (!state.resetAt) {
-    ui.countdownDisplay.textContent = "Add reset time";
-  } else {
-    ui.countdownDisplay.textContent = formatDuration(new Date(state.resetAt).getTime() - Date.now());
+  if (!isResourceEditorOpen()) {
+    syncStateToInputs();
   }
 
-  if (!Number.isFinite(state.remainingPercent) || !state.resetAt) {
+  const visibleResources = isResourceEditorOpen() ? readDraftResources() : state;
+
+  ui.sourceDisplay.textContent = `${visibleResources.provider || "AI"} · Estimated`;
+  ui.remainingDisplay.textContent = Number.isFinite(visibleResources.remainingPercent) ? formatPercent(visibleResources.remainingPercent) : "Set";
+  ui.resetDisplay.textContent = visibleResources.resetAt ? formatDateTime(new Date(visibleResources.resetAt)) : "Set reset";
+
+  if (!visibleResources.resetAt) {
+    ui.countdownDisplay.textContent = "Add reset time";
+  } else {
+    ui.countdownDisplay.textContent = formatDuration(new Date(visibleResources.resetAt).getTime() - Date.now());
+  }
+
+  if (!Number.isFinite(visibleResources.remainingPercent) || !visibleResources.resetAt) {
     ui.resourceStatusText.textContent = "Set your current AI estimate to start.";
     ui.resourceStatus.dataset.status = "idle";
-  } else if (state.remainingPercent <= 12) {
+  } else if (visibleResources.remainingPercent <= 12) {
     ui.resourceStatusText.textContent = "Low resources. Save them for higher-value work.";
     ui.resourceStatus.dataset.status = "wait";
-  } else if (state.remainingPercent <= 28) {
+  } else if (visibleResources.remainingPercent <= 28) {
     ui.resourceStatusText.textContent = "Tight resources. MAS will likely suggest SAVE.";
     ui.resourceStatus.dataset.status = "save";
   } else {
@@ -634,7 +651,9 @@ function renderResources() {
     ui.resourceStatus.dataset.status = "go";
   }
 
-  saveState();
+  if (!isResourceEditorOpen()) {
+    saveState();
+  }
 }
 
 function normalizeTaskKey(text) {
@@ -927,6 +946,7 @@ function saveResourceEstimate() {
 
 function toggleResourceEditor() {
   ui.resourceEditor.classList.toggle("hidden");
+  renderResources();
 }
 
 function adjustRemaining(delta) {
@@ -958,6 +978,9 @@ function boot() {
   ui.resourceMinusFive.addEventListener("click", () => adjustRemaining(-5));
   ui.resourceResetFull.addEventListener("click", resetResourcesToFull);
   ui.askMasButton.addEventListener("click", () => askMas());
+  fields.provider.addEventListener("change", renderResources);
+  fields.remainingPercent.addEventListener("input", renderResources);
+  fields.resetAt.addEventListener("input", renderResources);
 
   ui.followupChoices.forEach((button) => {
     button.addEventListener("click", () => {
