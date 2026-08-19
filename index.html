@@ -388,7 +388,7 @@ textarea:focus {
 
       <section class="card result-card">
         <p class="label">MAS Decision</p>
-        <h2 id="advisor-decision">WAIT</h2>
+        <h2 id="advisor-decision">NEED INFO</h2>
         <p id="advisor-action-line" class="decision-line">Set your AI estimate, then ask MAS.</p>
         <p id="advisor-reason" class="reason-line">MAS uses your remaining resources, reset time, and task context to decide.</p>
       </section>
@@ -724,7 +724,7 @@ function needsFollowup(text) {
 function buildDecision(taskText, forcedProjectType = null) {
   if (!Number.isFinite(state.remainingPercent) || !state.resetAt) {
     return {
-      decision: "WAIT",
+      decision: "NEED INFO",
       advice: "Set your AI estimate first.",
       reason: "MAS needs your remaining % and reset time before it can judge this task.",
       projectType: forcedProjectType || inferProjectType(taskText),
@@ -744,7 +744,7 @@ function buildDecision(taskText, forcedProjectType = null) {
 
   if (predictedRemaining < 10 && !urgency) {
     return {
-      decision: "WAIT",
+      decision: "HOLD",
       advice: "Wait for reset or do a lighter task first.",
       reason: "This task would likely leave you with too little AI headroom.",
       projectType,
@@ -901,7 +901,7 @@ function updateHistoryEntry(taskText, decision, savings) {
 function askMas(forcedProjectType = null) {
   const taskText = fields.taskInput.value.trim();
   if (!taskText) {
-    ui.advisorDecision.textContent = "WAIT";
+    ui.advisorDecision.textContent = "NEED INFO";
     ui.advisorActionLine.textContent = "Tell MAS what you want to do first.";
     ui.advisorReason.textContent = "A short natural-language task description is enough.";
     return;
