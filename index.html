@@ -8,17 +8,17 @@
 :root {
   color-scheme: dark;
   --bg: #0b1020;
-  --bg-soft: #111833;
-  --panel: rgba(17, 24, 51, 0.94);
-  --border: #2b396b;
+  --panel: rgba(16, 22, 46, 0.96);
+  --panel-soft: #121935;
+  --border: #2a3868;
   --text: #edf2ff;
   --muted: #9ca9d5;
-  --accent: #87a1ff;
-  --go: #28c98a;
-  --save: #ffb54d;
-  --wait: #ff6f83;
-  --idle: #7384ba;
-  --shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+  --accent: #89a2ff;
+  --go: #2aca8c;
+  --save: #ffbf57;
+  --wait: #ff7286;
+  --idle: #7283ba;
+  --shadow: 0 20px 46px rgba(0, 0, 0, 0.28);
 }
 
 * {
@@ -42,15 +42,9 @@ p {
 }
 
 .app-shell {
-  width: min(100% - 20px, 1100px);
+  width: min(100% - 20px, 760px);
   margin: 0 auto;
-  padding: 16px 0 40px;
-}
-
-.layout {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
+  padding: 18px 0 44px;
 }
 
 .card {
@@ -76,67 +70,95 @@ p {
 
 h1 {
   margin-bottom: 10px;
-  font-size: clamp(2rem, 7vw, 3.2rem);
+  font-size: clamp(1.9rem, 7vw, 3rem);
   line-height: 1.06;
-}
-
-h2 {
-  margin-bottom: 0;
-  font-size: 1.18rem;
 }
 
 .subtitle,
 .status-reason,
 .save-hint,
 .history-list,
-.metric p,
-.status-label {
+.status-label,
+.field span,
+.support-metric span {
   color: var(--muted);
 }
 
 .subtitle {
   margin-bottom: 0;
-  line-height: 1.6;
-  max-width: 70ch;
+  line-height: 1.55;
+}
+
+.compact-subtitle {
+  margin-bottom: 0;
+}
+
+.product-flow {
+  display: grid;
+  gap: 14px;
+}
+
+.compact-heading {
+  margin-bottom: 14px;
 }
 
 .section-heading {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   align-items: flex-start;
-  margin-bottom: 16px;
 }
 
 .source-pill {
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
-  border-radius: 999px;
   padding: 8px 12px;
-  font-size: 0.84rem;
+  border-radius: 999px;
+  border: 1px solid rgba(137, 162, 255, 0.34);
+  background: rgba(137, 162, 255, 0.12);
+  font-size: 0.82rem;
+}
+
+.resource-hero {
+  margin-bottom: 14px;
+}
+
+.resource-value {
+  margin-bottom: 6px;
+  font-size: 1.02rem;
+  color: var(--muted);
+}
+
+.resource-value strong {
+  font-size: clamp(2rem, 10vw, 3.4rem);
+  line-height: 1;
   color: var(--text);
-  border: 1px solid rgba(135, 161, 255, 0.35);
-  background: rgba(135, 161, 255, 0.12);
 }
 
-.field-grid {
+.resource-reset,
+.resource-countdown {
+  margin-bottom: 4px;
+  font-size: 1rem;
+}
+
+.resource-inline-grid,
+.field-grid,
+.advanced-grid,
+.support-metrics,
+.decision-support {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
+  gap: 12px;
 }
 
-.full-width {
-  grid-column: 1 / -1;
+.resource-inline-grid,
+.advanced-grid {
+  grid-template-columns: 1fr;
 }
 
 .field {
   display: grid;
   gap: 8px;
-}
-
-.field span {
-  font-size: 0.95rem;
 }
 
 .field input,
@@ -145,7 +167,7 @@ h2 {
   width: 100%;
   border: 1px solid var(--border);
   border-radius: 16px;
-  background: var(--bg-soft);
+  background: var(--panel-soft);
   color: var(--text);
   padding: 14px 15px;
   font-size: 1rem;
@@ -155,12 +177,29 @@ h2 {
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-  outline: 2px solid rgba(135, 161, 255, 0.42);
+  outline: 2px solid rgba(137, 162, 255, 0.42);
   border-color: var(--accent);
 }
 
+.advanced-panel {
+  margin-top: 14px;
+  border: 1px solid rgba(137, 162, 255, 0.18);
+  border-radius: 18px;
+  background: rgba(137, 162, 255, 0.06);
+  padding: 14px;
+}
+
+.advanced-panel summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.advanced-panel[open] summary {
+  margin-bottom: 12px;
+}
+
 .actions {
-  margin-top: 16px;
+  margin-top: 14px;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -170,15 +209,15 @@ h2 {
 .ghost-button {
   border-radius: 999px;
   padding: 12px 16px;
+  font-size: 0.96rem;
   font-weight: 700;
   color: var(--text);
   cursor: pointer;
-  font-size: 0.95rem;
 }
 
 .primary-button {
-  border: 1px solid rgba(135, 161, 255, 0.44);
-  background: linear-gradient(180deg, #4a68ff, #3751d5);
+  border: 1px solid rgba(137, 162, 255, 0.4);
+  background: linear-gradient(180deg, #4a69ff, #3954d8);
 }
 
 .ghost-button {
@@ -186,37 +225,36 @@ h2 {
   background: transparent;
 }
 
-.quick-log-grid,
-.metric-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
+.full-button {
+  width: 100%;
+  justify-content: center;
 }
 
 .quick-log-grid {
-  margin-top: 14px;
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
 }
 
-.metric-grid {
-  margin-top: 16px;
-}
-
-.metric {
+.support-metric {
   border: 1px solid var(--border);
   border-radius: 18px;
-  background: var(--bg-soft);
-  padding: 16px;
+  background: var(--panel-soft);
+  padding: 14px;
 }
 
-.metric p {
-  margin-bottom: 8px;
-  font-size: 0.9rem;
-}
-
-.metric strong {
+.support-metric strong {
   display: block;
-  font-size: clamp(1.05rem, 5vw, 1.5rem);
+  margin-top: 6px;
+  font-size: 1.08rem;
   line-height: 1.35;
+}
+
+.decision-arrow {
+  text-align: center;
+  font-size: 1.7rem;
+  color: var(--muted);
 }
 
 .status-panel,
@@ -224,66 +262,80 @@ h2 {
 .savings-panel {
   border-radius: 20px;
   padding: 16px;
-  border: 1px solid rgba(115, 132, 186, 0.34);
-  background: rgba(115, 132, 186, 0.14);
+  border: 1px solid rgba(114, 131, 186, 0.34);
+  background: rgba(114, 131, 186, 0.14);
 }
 
 .status-panel[data-status="safe"],
 .advisor-panel[data-status="go"] {
-  border-color: rgba(40, 201, 138, 0.38);
-  background: rgba(40, 201, 138, 0.14);
+  border-color: rgba(42, 202, 140, 0.38);
+  background: rgba(42, 202, 140, 0.14);
 }
 
 .status-panel[data-status="high"],
 .advisor-panel[data-status="save"] {
-  border-color: rgba(255, 181, 77, 0.4);
-  background: rgba(255, 181, 77, 0.14);
+  border-color: rgba(255, 191, 87, 0.4);
+  background: rgba(255, 191, 87, 0.14);
 }
 
 .status-panel[data-status="critical"],
 .advisor-panel[data-status="wait"] {
-  border-color: rgba(255, 111, 131, 0.42);
-  background: rgba(255, 111, 131, 0.14);
+  border-color: rgba(255, 114, 134, 0.42);
+  background: rgba(255, 114, 134, 0.14);
 }
 
-.advisor-action-line {
-  margin-top: 12px;
-  padding: 12px 14px;
-  border-radius: 16px;
-  border: 1px dashed rgba(135, 161, 255, 0.28);
-  background: rgba(135, 161, 255, 0.08);
-  line-height: 1.5;
+.decision-value {
+  margin-bottom: 10px;
+  font-size: clamp(2.2rem, 12vw, 4rem);
+  line-height: 1;
+}
+
+.decision-copy {
+  margin-bottom: 10px;
+  font-size: 1.04rem;
+  line-height: 1.55;
+}
+
+.savings-highlight {
+  margin-bottom: 8px;
+  font-size: 1rem;
+  color: var(--muted);
+}
+
+.savings-highlight strong {
+  font-size: clamp(1.9rem, 9vw, 3rem);
+  line-height: 1;
+  color: var(--text);
 }
 
 .history-block {
-  margin-top: 18px;
+  margin-top: 16px;
 }
 
 .history-list {
   margin: 0;
   padding-left: 18px;
-  line-height: 1.65;
+  line-height: 1.6;
 }
 
 @media (min-width: 720px) {
   .app-shell {
-    width: min(100% - 32px, 1100px);
+    width: min(100% - 32px, 760px);
     padding-top: 24px;
   }
 
-  .field-grid {
+  .resource-inline-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .advanced-grid,
+  .support-metrics,
+  .decision-support {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .quick-log-grid,
-  .metric-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1024px) {
-  .layout {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .quick-log-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -292,17 +344,16 @@ h2 {
 <body>
   <main class="app-shell">
     <section class="hero card">
-      <p class="hero-kicker">Use your AI wisely</p>
-      <h1>Know what you can do next with AI.</h1>
-      <p class="subtitle">Tell MAS how much AI you have left, what kind of project you’re doing, and it will answer with GO, SAVE, or WAIT.</p>
+      <p class="hero-kicker">MAS AI Usage Advisor</p>
+      <h1>Use the right AI work at the right time.</h1>
+      <p class="subtitle">Tell MAS what you have left and what you want to do. It will answer with GO, SAVE, or WAIT.</p>
     </section>
 
-    <section class="layout">
-      <section class="card">
-        <div class="section-heading">
+    <section class="product-flow">
+      <section class="card resources-card">
+        <div class="section-heading compact-heading">
           <div>
-            <p class="section-kicker">1. YOUR AI RESOURCES</p>
-            <h2>What AI do you have left right now?</h2>
+            <p class="section-kicker">Your AI Resources</p>
           </div>
           <span class="source-pill" id="source-display">Estimated</span>
         </div>
@@ -310,12 +361,20 @@ h2 {
         <div class="status-panel" id="resource-status-panel" data-status="idle">
           <p class="status-label">Resource status</p>
           <h3 id="resource-status-text">Add your current AI usage</h3>
-          <p id="resource-status-reason" class="status-reason">This public beta uses MAS estimates unless a provider has a reliable public sync source.</p>
+          <p id="resource-status-reason" class="status-reason">MAS will treat these numbers as estimated unless a provider has a reliable sync source.</p>
         </div>
 
-        <div class="field-grid">
+        <div class="resource-hero">
+          <div class="resource-main">
+            <p class="resource-value"><strong id="remaining-display">—</strong> LEFT</p>
+            <p class="resource-reset">Reset: <span id="reset-display">—</span></p>
+            <p class="resource-countdown" id="countdown-display">—</p>
+          </div>
+        </div>
+
+        <div class="resource-inline-grid">
           <label class="field">
-            <span>AI provider</span>
+            <span>Provider</span>
             <select id="provider">
               <option>ChatGPT</option>
               <option>Claude</option>
@@ -326,79 +385,72 @@ h2 {
           </label>
 
           <label class="field">
-            <span>Plan / quota type</span>
-            <input id="planType" type="text" placeholder="例如 Pro / Max / Team / Daily credits">
-          </label>
-
-          <label class="field">
             <span>Remaining %</span>
-            <input id="remainingPercent" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="例如 42">
+            <input id="remainingPercent" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="48">
           </label>
 
           <label class="field">
             <span>Reset time</span>
             <input id="resetAt" type="datetime-local">
           </label>
-
-          <label class="field">
-            <span>Known usage drop %</span>
-            <input id="recentUsageDrop" type="number" min="0" step="0.1" inputmode="decimal" placeholder="例如 8">
-          </label>
-
-          <label class="field">
-            <span>Measured over hours</span>
-            <input id="recentWindowHours" type="number" min="0.1" step="0.1" inputmode="decimal" placeholder="例如 6">
-          </label>
         </div>
+
+        <details class="advanced-panel">
+          <summary>More resource details</summary>
+
+          <div class="field-grid advanced-grid">
+            <label class="field">
+              <span>Plan / quota type</span>
+              <input id="planType" type="text" placeholder="例如 Pro / Max / Team">
+            </label>
+
+            <label class="field">
+              <span>Known usage drop %</span>
+              <input id="recentUsageDrop" type="number" min="0" step="0.1" inputmode="decimal" placeholder="8">
+            </label>
+
+            <label class="field">
+              <span>Measured over hours</span>
+              <input id="recentWindowHours" type="number" min="0.1" step="0.1" inputmode="decimal" placeholder="6">
+            </label>
+          </div>
+
+          <div class="support-metrics">
+            <div class="support-metric">
+              <span>Last updated</span>
+              <strong id="updated-display">—</strong>
+            </div>
+            <div class="support-metric">
+              <span>Burn rate</span>
+              <strong id="burn-rate-display">—</strong>
+            </div>
+            <div class="support-metric">
+              <span>Will it last?</span>
+              <strong id="survive-display">—</strong>
+            </div>
+          </div>
+
+          <div class="quick-log-grid">
+            <button type="button" class="ghost-button quick-log-button" data-drop="5" data-hours="24">Known drop 5%</button>
+            <button type="button" class="ghost-button quick-log-button" data-drop="10" data-hours="24">Known drop 10%</button>
+            <button type="button" class="ghost-button quick-log-button" data-drop="15" data-hours="24">Known drop 15%</button>
+          </div>
+        </details>
 
         <div class="actions">
-          <button type="button" id="refresh-button" class="primary-button">Update resources</button>
+          <button type="button" id="refresh-button" class="ghost-button">Update resources</button>
           <button type="button" id="reset-button" class="ghost-button">Reset</button>
-        </div>
-
-        <div class="quick-log-grid">
-          <button type="button" class="ghost-button quick-log-button" data-drop="5" data-hours="24">Known drop 5%</button>
-          <button type="button" class="ghost-button quick-log-button" data-drop="10" data-hours="24">Known drop 10%</button>
-          <button type="button" class="ghost-button quick-log-button" data-drop="15" data-hours="24">Known drop 15%</button>
-        </div>
-
-        <div class="metric-grid">
-          <article class="metric">
-            <p>Remaining</p>
-            <strong id="remaining-display">—</strong>
-          </article>
-          <article class="metric">
-            <p>Reset</p>
-            <strong id="reset-display">—</strong>
-          </article>
-          <article class="metric">
-            <p>Countdown</p>
-            <strong id="countdown-display">—</strong>
-          </article>
-          <article class="metric">
-            <p>Last updated</p>
-            <strong id="updated-display">—</strong>
-          </article>
-          <article class="metric">
-            <p>Recent burn rate</p>
-            <strong id="burn-rate-display">—</strong>
-          </article>
-          <article class="metric">
-            <p>Can this last to reset?</p>
-            <strong id="survive-display">—</strong>
-          </article>
         </div>
       </section>
 
-      <section class="card">
-        <div class="section-heading">
+      <section class="card project-card">
+        <div class="section-heading compact-heading">
           <div>
-            <p class="section-kicker">2. YOUR PROJECT</p>
-            <h2>What kind of work are you about to do?</h2>
+            <p class="section-kicker">What are you doing?</p>
           </div>
         </div>
 
-        <div class="field-grid">
+        <div class="project-type-row">
           <label class="field">
             <span>Project type</span>
             <select id="projectType">
@@ -407,104 +459,98 @@ h2 {
               <option value="repeating">Repeating Project</option>
             </select>
           </label>
-
-          <label class="field full-width">
-            <span>Project / task description</span>
-            <textarea id="taskInput" rows="4" placeholder="例如：write landing page copy for a product launch"></textarea>
-          </label>
-
-          <label class="field">
-            <span>Estimated usage per run %</span>
-            <input id="unitUsagePercent" type="number" min="0" step="0.1" inputmode="decimal" placeholder="例如 6">
-          </label>
-
-          <label class="field">
-            <span>Planned runs</span>
-            <input id="plannedRuns" type="number" min="0" step="1" inputmode="numeric" placeholder="例如 2">
-          </label>
-
-          <label class="field">
-            <span>Max retries</span>
-            <input id="maxRetries" type="number" min="0" step="1" inputmode="numeric" placeholder="例如 1">
-          </label>
         </div>
+
+        <label class="field">
+          <span>Task</span>
+          <textarea id="taskInput" rows="3" placeholder="用一句話描述目前要做的事……"></textarea>
+        </label>
+
+        <details class="advanced-panel">
+          <summary>Task estimate details</summary>
+
+          <div class="field-grid advanced-grid">
+            <label class="field">
+              <span>Estimated usage per run %</span>
+              <input id="unitUsagePercent" type="number" min="0" step="0.1" inputmode="decimal" placeholder="6">
+            </label>
+
+            <label class="field">
+              <span>Planned runs</span>
+              <input id="plannedRuns" type="number" min="0" step="1" inputmode="numeric" placeholder="2">
+            </label>
+
+            <label class="field">
+              <span>Max retries</span>
+              <input id="maxRetries" type="number" min="0" step="1" inputmode="numeric" placeholder="1">
+            </label>
+          </div>
+        </details>
 
         <div class="actions">
-          <button type="button" id="analyze-task-button" class="primary-button">Get MAS decision</button>
+          <button type="button" id="analyze-task-button" class="primary-button full-button">Ask MAS</button>
         </div>
       </section>
 
-      <section class="card">
-        <div class="section-heading">
-          <div>
-            <p class="section-kicker">3. MAS DECISION</p>
-            <h2>Should you use AI now?</h2>
+      <section class="decision-arrow" aria-hidden="true">↓</section>
+
+      <section class="card decision-card">
+        <div class="advisor-panel" id="advisor-panel" data-status="idle">
+          <p class="status-label">MAS Decision</p>
+          <h2 class="decision-value" id="advisor-decision">WAIT</h2>
+          <p id="advisor-action-line" class="decision-copy">先更新你的 AI resources，再問 MAS。</p>
+          <p id="advisor-reason" class="status-reason">MAS 會根據 remaining resources、reset time、project type 與 task context 做判斷。</p>
+        </div>
+
+        <div class="decision-support">
+          <div class="support-metric">
+            <span>After this task</span>
+            <strong id="advisor-remaining">—</strong>
+          </div>
+          <div class="support-metric">
+            <span>Usage range</span>
+            <strong id="advisor-range">—</strong>
+          </div>
+          <div class="support-metric">
+            <span>AI route</span>
+            <strong id="advisor-provider">—</strong>
+          </div>
+          <div class="support-metric">
+            <span>Route</span>
+            <strong id="advisor-route">—</strong>
           </div>
         </div>
-
-        <div class="advisor-panel" id="advisor-panel" data-status="idle">
-          <p class="status-label">MAS decision</p>
-          <h3 id="advisor-decision">WAIT</h3>
-          <p id="advisor-reason" class="status-reason">Add your AI resources and project details to get a real answer.</p>
-          <p id="advisor-action-line" class="advisor-action-line">Next step: update your resources first, then ask MAS again.</p>
-        </div>
-
-        <div class="metric-grid">
-          <article class="metric">
-            <p>Predicted remaining after this task</p>
-            <strong id="advisor-remaining">—</strong>
-          </article>
-          <article class="metric">
-            <p>Estimated usage range</p>
-            <strong id="advisor-range">—</strong>
-          </article>
-          <article class="metric">
-            <p>Recommended AI route</p>
-            <strong id="advisor-provider">—</strong>
-          </article>
-          <article class="metric">
-            <p>Execution route</p>
-            <strong id="advisor-route">—</strong>
-          </article>
-        </div>
       </section>
 
-      <section class="card">
-        <div class="section-heading">
+      <section class="card savings-card">
+        <div class="section-heading compact-heading">
           <div>
-            <p class="section-kicker">4. YOUR SAVINGS</p>
-            <h2>What did MAS help you avoid?</h2>
+            <p class="section-kicker">Saved with MAS</p>
           </div>
           <span class="source-pill" id="savings-mode">Estimated</span>
         </div>
 
-        <div class="savings-panel">
-          <p id="savings-text">Savings will appear after MAS compares your project against a baseline.</p>
-        </div>
+        <p class="savings-highlight"><strong id="usage-saved-display">—</strong> this week</p>
+        <p id="savings-text" class="subtitle compact-subtitle">Savings appear after MAS compares your task against a baseline.</p>
 
-        <div class="metric-grid">
-          <article class="metric">
-            <p>Baseline</p>
+        <div class="support-metrics">
+          <div class="support-metric">
+            <span>Baseline</span>
             <strong id="baseline-display">—</strong>
-          </article>
-          <article class="metric">
-            <p>AI usage saved</p>
-            <strong id="usage-saved-display">—</strong>
-          </article>
-          <article class="metric">
-            <p>Time saved</p>
+          </div>
+          <div class="support-metric">
+            <span>Time saved</span>
             <strong id="time-saved-display">—</strong>
-          </article>
-          <article class="metric">
-            <p>Money saved</p>
+          </div>
+          <div class="support-metric">
+            <span>Money saved</span>
             <strong id="money-saved-display">Unavailable</strong>
-          </article>
+          </div>
         </div>
 
-        <p class="save-hint" id="savings-method-note">Money is shown only when there is reliable cost data. This beta currently focuses on AI usage saved and time saved.</p>
+        <p class="save-hint" id="savings-method-note">Money shows only when there is reliable cost data.</p>
 
         <div class="history-block">
-          <h3>Recent project evidence</h3>
           <ul id="history-list" class="history-list">
             <li>No project evidence yet.</li>
           </ul>
@@ -992,8 +1038,8 @@ function updateSavingsView(savings, decision, projectType) {
   ui.savingsMode.textContent = savings.savingsMode;
   ui.baselineDisplay.textContent = `${savings.baselineLabel} · ${savings.baselineUsage.toFixed(1)}%`;
   ui.usageSavedDisplay.textContent =
-    savings.savedUsage > 0
-      ? `${savings.savedUsage.toFixed(1)}% (${savings.savedUsagePercent.toFixed(0)}%)`
+    savings.savedUsagePercent > 0
+      ? `${savings.savedUsagePercent.toFixed(0)}%`
       : "0%";
   ui.timeSavedDisplay.textContent =
     savings.timeSavedMinutes > 0 ? formatMinutes(savings.timeSavedMinutes) : "0 min";
