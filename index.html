@@ -1,0 +1,1270 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MAS AI Usage Advisor v0.2</title>
+  <style>
+:root {
+  color-scheme: dark;
+  --bg: #0b1020;
+  --panel: rgba(18, 25, 51, 0.92);
+  --panel-strong: #182244;
+  --panel-soft: #10182f;
+  --border: #2c3867;
+  --text: #edf2ff;
+  --muted: #9fb0e0;
+  --accent: #89a0ff;
+  --go: #25c281;
+  --warn: #ffb545;
+  --block: #ff657a;
+  --idle: #6f81b8;
+  --shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, "Noto Sans TC", "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(71, 103, 255, 0.24), transparent 36%),
+    var(--bg);
+  color: var(--text);
+}
+
+.app-shell {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 56px;
+}
+
+.hero {
+  margin-bottom: 22px;
+}
+
+.eyebrow,
+.section-kicker,
+.tier-name {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 10px;
+  font-size: clamp(2rem, 4vw, 3.3rem);
+}
+
+h2 {
+  margin-bottom: 0;
+  font-size: 1.2rem;
+}
+
+.subtitle {
+  max-width: 760px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.badge {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(137, 160, 255, 0.14);
+  border: 1px solid rgba(137, 160, 255, 0.32);
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.badge-muted {
+  color: var(--muted);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 420px) minmax(360px, 1fr);
+  gap: 20px;
+}
+
+.quick-strip {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+
+.quick-strip-copy h2 {
+  margin: 0;
+}
+
+.quick-strip-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.left-column,
+.right-column {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: start;
+  margin-bottom: 16px;
+}
+
+.field-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.compact-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field span,
+.metric p,
+.status-label,
+.save-hint,
+.status-reason,
+.history-list,
+.savings-panel p,
+.trial-banner,
+.freshness-tag,
+.tier li {
+  color: var(--muted);
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--panel-strong);
+  color: var(--text);
+  padding: 14px 16px;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: 2px solid rgba(137, 160, 255, 0.45);
+  border-color: var(--accent);
+}
+
+.actions {
+  margin-top: 18px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.quick-log-grid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.primary-button,
+.ghost-button {
+  border-radius: 999px;
+  padding: 11px 16px;
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.primary-button {
+  border: 1px solid rgba(137, 160, 255, 0.42);
+  background: linear-gradient(180deg, #4868ff, #3653d4);
+}
+
+.ghost-button {
+  border: 1px solid var(--border);
+  background: transparent;
+}
+
+.status-panel,
+.advisor-panel {
+  border-radius: 20px;
+  padding: 18px;
+  background: rgba(111, 129, 184, 0.16);
+  border: 1px solid rgba(111, 129, 184, 0.35);
+}
+
+.status-panel[data-status="safe"],
+.advisor-panel[data-status="go"] {
+  background: rgba(37, 194, 129, 0.16);
+  border-color: rgba(37, 194, 129, 0.4);
+}
+
+.status-panel[data-status="high"],
+.advisor-panel[data-status="save"] {
+  background: rgba(255, 181, 69, 0.16);
+  border-color: rgba(255, 181, 69, 0.4);
+}
+
+.status-panel[data-status="critical"],
+.advisor-panel[data-status="wait"] {
+  background: rgba(255, 101, 122, 0.16);
+  border-color: rgba(255, 101, 122, 0.44);
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.compact-metrics {
+  margin-top: 14px;
+}
+
+.metric {
+  border: 1px solid var(--border);
+  background: var(--panel-strong);
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.metric p {
+  margin-bottom: 10px;
+  font-size: 0.92rem;
+}
+
+.metric strong {
+  font-size: clamp(1.15rem, 2vw, 1.7rem);
+  line-height: 1.35;
+  display: block;
+}
+
+.advisor-action-line,
+.daily-summary {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(137, 160, 255, 0.08);
+  border: 1px dashed rgba(137, 160, 255, 0.28);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.freshness-tag {
+  font-size: 0.88rem;
+  text-align: right;
+}
+
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.tier {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--panel-soft);
+  padding: 16px;
+}
+
+.featured-tier {
+  border-color: rgba(137, 160, 255, 0.48);
+  box-shadow: inset 0 0 0 1px rgba(137, 160, 255, 0.18);
+}
+
+.tier ul {
+  margin: 12px 0 0;
+  padding-left: 18px;
+  line-height: 1.6;
+}
+
+.trial-banner,
+.savings-panel {
+  margin-top: 16px;
+  border-radius: 18px;
+  border: 1px dashed rgba(137, 160, 255, 0.35);
+  background: rgba(137, 160, 255, 0.08);
+  padding: 14px 16px;
+}
+
+.history-block {
+  margin-top: 18px;
+}
+
+.history-list {
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.6;
+}
+
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-strip {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 720px) {
+  .compact-grid,
+  .quick-log-grid,
+  .tier-grid,
+  .metric-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .app-shell {
+    width: min(100% - 20px, 1180px);
+    padding-top: 20px;
+  }
+
+  .card {
+    padding: 16px;
+    border-radius: 20px;
+  }
+}
+
+</style>
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero">
+      <p class="eyebrow">MAS-M02 · AI USAGE ADVISOR v0.2 DOGFOOD</p>
+      <h1>MAS AI Usage Advisor</h1>
+      <p class="subtitle">先回答五件事：剩多少、何時重置、照這速度夠不夠、下一件事能不能做、該用哪個 AI。</p>
+      <div class="badges">
+        <span class="badge">Local-first</span>
+        <span class="badge">No login</span>
+        <span class="badge badge-muted">Manual / mock usage input — not live provider data</span>
+      </div>
+    </section>
+
+    <section class="quick-strip card">
+      <div class="quick-strip-copy">
+        <p class="section-kicker">DAILY FLOW</p>
+        <h2>先更新 usage，再問下一件事能不能做</h2>
+      </div>
+      <div class="quick-strip-actions">
+        <button type="button" id="quick-refresh-button" class="primary-button">1 分鐘更新 usage</button>
+        <button type="button" id="quick-analyze-button" class="ghost-button">2 問下一件事</button>
+      </div>
+    </section>
+
+    <section class="layout">
+      <aside class="left-column">
+        <section class="card">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker">1. AI Provider / Plan</p>
+              <h2>Usage source setup</h2>
+            </div>
+          </div>
+
+          <div class="field-grid">
+            <label class="field">
+              <span>AI Provider</span>
+              <select id="provider">
+                <option>ChatGPT</option>
+                <option>Codex</option>
+                <option>Claude / Claude Code</option>
+                <option>Other</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Plan type</span>
+              <input id="planType" type="text" placeholder="例如 Pro / Max / Team / Free">
+            </label>
+
+            <label class="field">
+              <span>Remaining %</span>
+              <input id="remainingPercent" type="number" min="0" max="100" step="0.1" inputmode="decimal" placeholder="例如 62">
+            </label>
+
+            <label class="field">
+              <span>Reset date / time</span>
+              <input id="resetAt" type="datetime-local">
+            </label>
+
+            <label class="field">
+              <span>Recent usage drop %</span>
+              <input id="recentUsageDrop" type="number" min="0" step="0.1" inputmode="decimal" placeholder="例如 12">
+            </label>
+
+            <label class="field">
+              <span>Measured over hours</span>
+              <input id="recentWindowHours" type="number" min="0.1" step="0.1" inputmode="decimal" placeholder="例如 24">
+            </label>
+          </div>
+
+          <div class="actions">
+            <button type="button" id="refresh-button" class="primary-button">Refresh now</button>
+            <button type="button" id="reset-button" class="ghost-button">清除 session</button>
+          </div>
+          <div class="quick-log-grid">
+            <button type="button" class="ghost-button quick-log-button" data-drop="5" data-hours="24">今天少了 5%</button>
+            <button type="button" class="ghost-button quick-log-button" data-drop="10" data-hours="24">今天少了 10%</button>
+            <button type="button" class="ghost-button quick-log-button" data-drop="15" data-hours="24">今天少了 15%</button>
+          </div>
+          <p class="save-hint">資料本地保存。Refresh 只更新本地時間戳，不會抓 live provider data。</p>
+        </section>
+
+        <section class="card">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker">4. NEXT TASK</p>
+              <h2>What do you want to do next?</h2>
+            </div>
+          </div>
+
+          <label class="field">
+            <span>Task description</span>
+            <textarea id="taskInput" rows="4" placeholder="例如：用 Codex 修一個 bug，讀 6 個檔案，跑 2 次測試。"></textarea>
+          </label>
+
+          <div class="field-grid compact-grid">
+            <label class="field">
+              <span>Estimated usage / run %</span>
+              <input id="unitUsagePercent" type="number" min="0" step="0.1" inputmode="decimal" placeholder="例如 2">
+            </label>
+
+            <label class="field">
+              <span>Planned runs</span>
+              <input id="plannedRuns" type="number" min="0" step="1" inputmode="numeric" placeholder="例如 4">
+            </label>
+
+            <label class="field">
+              <span>Max retries</span>
+              <input id="maxRetries" type="number" min="0" step="1" inputmode="numeric" placeholder="例如 2">
+            </label>
+          </div>
+
+          <div class="actions">
+            <button type="button" id="analyze-task-button" class="primary-button">Analyze next task</button>
+          </div>
+
+          <div class="advisor-panel" id="advisor-panel" data-status="idle">
+            <p class="status-label">Advisor</p>
+            <h3 id="advisor-decision">尚未分析</h3>
+            <p id="advisor-reason" class="status-reason">按下 Analyze next task 後，才會計算建議。</p>
+            <p id="advisor-action-line" class="advisor-action-line">下一步：先更新 usage，再決定要不要開始。</p>
+
+            <div class="metric-grid compact-metrics">
+              <article class="metric">
+                <p>Estimated usage range</p>
+                <strong id="advisor-range">—</strong>
+              </article>
+              <article class="metric">
+                <p>Predicted remaining %</p>
+                <strong id="advisor-remaining">—</strong>
+              </article>
+              <article class="metric">
+                <p>Recommended AI / tier</p>
+                <strong id="advisor-provider">—</strong>
+              </article>
+              <article class="metric">
+                <p>Route</p>
+                <strong id="advisor-route">—</strong>
+              </article>
+            </div>
+          </div>
+        </section>
+      </aside>
+
+      <section class="right-column">
+        <section class="card">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker">2. USAGE DASHBOARD</p>
+              <h2>Today’s usage control center</h2>
+            </div>
+            <span class="freshness-tag" id="freshness-tag">Data freshness: —</span>
+          </div>
+
+          <div class="status-panel" id="usage-status-panel" data-status="idle">
+            <p class="status-label">Usage status</p>
+            <h3 id="usage-status-text">等待輸入</h3>
+            <p id="usage-status-reason" class="status-reason">先輸入 Remaining %、Reset 與最近消耗速度。</p>
+          </div>
+
+          <div class="metric-grid">
+            <article class="metric">
+              <p>Remaining %</p>
+              <strong id="remaining-display">—</strong>
+            </article>
+            <article class="metric">
+              <p>Reset date / time</p>
+              <strong id="reset-display">—</strong>
+            </article>
+            <article class="metric">
+              <p>Reset countdown</p>
+              <strong id="countdown-display">—</strong>
+            </article>
+            <article class="metric">
+              <p>Last updated</p>
+              <strong id="updated-display">—</strong>
+            </article>
+          </div>
+          <div class="daily-summary" id="daily-summary">
+            Today: 先輸入 usage。這個首頁應該在 10 秒內回答你「今天還能不能用」。
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker">3. RUNWAY</p>
+              <h2>Can this usage survive to reset?</h2>
+            </div>
+          </div>
+
+          <div class="metric-grid">
+            <article class="metric">
+              <p>Recent burn rate</p>
+              <strong id="burn-rate-display">—</strong>
+            </article>
+            <article class="metric">
+              <p>Estimated exhaustion</p>
+              <strong id="exhaustion-display">—</strong>
+            </article>
+            <article class="metric">
+              <p>Can survive to reset</p>
+              <strong id="survive-display">—</strong>
+            </article>
+            <article class="metric">
+              <p>Today's safe allowance</p>
+              <strong id="allowance-display">—</strong>
+            </article>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker">5. PRODUCT TIERS</p>
+              <h2>Packaging concept</h2>
+            </div>
+          </div>
+
+          <div class="tier-grid">
+            <article class="tier">
+              <p class="tier-name">Free</p>
+              <strong>Daily visibility</strong>
+              <ul>
+                <li>Remaining %</li>
+                <li>Reset / countdown</li>
+                <li>Basic SAFE / HIGH / CRITICAL</li>
+              </ul>
+            </article>
+
+            <article class="tier featured-tier">
+              <p class="tier-name">Standard — $4.9/month</p>
+              <strong>Task decision layer</strong>
+              <ul>
+                <li>Task usage estimate</li>
+                <li>Model recommendation</li>
+                <li>GO / SAVE / WAIT</li>
+                <li>Usage alerts</li>
+              </ul>
+            </article>
+
+            <article class="tier">
+              <p class="tier-name">Pro — $9.9/month</p>
+              <strong>Optimization layer</strong>
+              <ul>
+                <li>Cross-AI optimization</li>
+                <li>Project forecast</li>
+                <li>Smart routing</li>
+                <li>Hardware advisor</li>
+                <li>Savings report</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="trial-banner">
+            7-day free trial concept only — no payment flow implemented.
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker">6. SAVINGS</p>
+              <h2>Dogfood evidence</h2>
+            </div>
+          </div>
+
+          <div class="savings-panel">
+            <p id="savings-text">No verified savings yet. Start using task advice and refresh data manually to build real evidence.</p>
+          </div>
+
+          <div class="metric-grid compact-metrics">
+            <article class="metric">
+              <p>Estimated avoided waste</p>
+              <strong id="avoided-waste-display">—</strong>
+            </article>
+            <article class="metric">
+              <p>AI spend (estimated)</p>
+              <strong id="estimated-spend-display">—</strong>
+            </article>
+            <article class="metric">
+              <p>Net savings</p>
+              <strong id="net-savings-display">—</strong>
+            </article>
+            <article class="metric">
+              <p>Price reference (10%)</p>
+              <strong id="pricing-reference-display">—</strong>
+            </article>
+          </div>
+          <p class="save-hint" id="savings-method-note">Estimated only. Based on local usage records and advisor decisions, not provider billing data.</p>
+
+          <div class="history-block">
+            <h3>Recent advisor history</h3>
+            <ul id="history-list" class="history-list">
+              <li>No local advisor history yet.</li>
+            </ul>
+          </div>
+
+          <div class="history-block">
+            <h3>Real usage records</h3>
+            <ul id="usage-records-list" class="history-list">
+              <li>No local usage records yet.</li>
+            </ul>
+          </div>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <script>
+const STORAGE_KEY = "mas-ai-usage-advisor-v02-session";
+const HISTORY_KEY = "mas-ai-usage-advisor-v02-history";
+const USAGE_RECORDS_KEY = "mas-ai-usage-advisor-v02-usage-records";
+const REFRESH_INTERVAL_MINUTES = 5;
+const DEFAULT_MONTHLY_AI_SPEND = 20;
+
+const fields = {
+  provider: document.getElementById("provider"),
+  planType: document.getElementById("planType"),
+  remainingPercent: document.getElementById("remainingPercent"),
+  resetAt: document.getElementById("resetAt"),
+  recentUsageDrop: document.getElementById("recentUsageDrop"),
+  recentWindowHours: document.getElementById("recentWindowHours"),
+  taskInput: document.getElementById("taskInput"),
+  unitUsagePercent: document.getElementById("unitUsagePercent"),
+  plannedRuns: document.getElementById("plannedRuns"),
+  maxRetries: document.getElementById("maxRetries"),
+};
+
+const ui = {
+  usageStatusPanel: document.getElementById("usage-status-panel"),
+  usageStatusText: document.getElementById("usage-status-text"),
+  usageStatusReason: document.getElementById("usage-status-reason"),
+  freshnessTag: document.getElementById("freshness-tag"),
+  remainingDisplay: document.getElementById("remaining-display"),
+  resetDisplay: document.getElementById("reset-display"),
+  countdownDisplay: document.getElementById("countdown-display"),
+  updatedDisplay: document.getElementById("updated-display"),
+  burnRateDisplay: document.getElementById("burn-rate-display"),
+  exhaustionDisplay: document.getElementById("exhaustion-display"),
+  surviveDisplay: document.getElementById("survive-display"),
+  allowanceDisplay: document.getElementById("allowance-display"),
+  advisorPanel: document.getElementById("advisor-panel"),
+  advisorDecision: document.getElementById("advisor-decision"),
+  advisorReason: document.getElementById("advisor-reason"),
+  advisorRange: document.getElementById("advisor-range"),
+  advisorRemaining: document.getElementById("advisor-remaining"),
+  advisorProvider: document.getElementById("advisor-provider"),
+  advisorRoute: document.getElementById("advisor-route"),
+  advisorActionLine: document.getElementById("advisor-action-line"),
+  dailySummary: document.getElementById("daily-summary"),
+  savingsText: document.getElementById("savings-text"),
+  avoidedWasteDisplay: document.getElementById("avoided-waste-display"),
+  estimatedSpendDisplay: document.getElementById("estimated-spend-display"),
+  netSavingsDisplay: document.getElementById("net-savings-display"),
+  pricingReferenceDisplay: document.getElementById("pricing-reference-display"),
+  savingsMethodNote: document.getElementById("savings-method-note"),
+  historyList: document.getElementById("history-list"),
+  usageRecordsList: document.getElementById("usage-records-list"),
+  refreshButton: document.getElementById("refresh-button"),
+  quickRefreshButton: document.getElementById("quick-refresh-button"),
+  quickAnalyzeButton: document.getElementById("quick-analyze-button"),
+  resetButton: document.getElementById("reset-button"),
+  analyzeTaskButton: document.getElementById("analyze-task-button"),
+  quickLogButtons: Array.from(document.querySelectorAll(".quick-log-button")),
+};
+
+let lastUpdatedAt = null;
+let advisorHistory = [];
+let usageRecords = [];
+
+function parseNumber(value) {
+  const normalized = Number(value);
+  return Number.isFinite(normalized) && normalized >= 0 ? normalized : null;
+}
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function formatPercent(value) {
+  if (value === null || Number.isNaN(value)) return "—";
+  return `${value.toFixed(1)}%`;
+}
+
+function formatMoney(value) {
+  if (value === null || Number.isNaN(value)) return "—";
+  return new Intl.NumberFormat("zh-TW", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
+function formatDateTime(date) {
+  if (!(date instanceof Date) || Number.isNaN(date.getTime())) return "—";
+  return new Intl.DateTimeFormat("zh-TW", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(date);
+}
+
+function formatDuration(ms) {
+  if (!Number.isFinite(ms) || ms <= 0) return "已到重置時間";
+  const totalSeconds = Math.floor(ms / 1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  const parts = [];
+  if (days > 0) parts.push(`${days}d`);
+  parts.push(`${hours}h`, `${minutes}m`, `${seconds}s`);
+  return parts.join(" ");
+}
+
+function saveSession() {
+  const snapshot = {
+    provider: fields.provider.value,
+    planType: fields.planType.value,
+    remainingPercent: fields.remainingPercent.value,
+    resetAt: fields.resetAt.value,
+    recentUsageDrop: fields.recentUsageDrop.value,
+    recentWindowHours: fields.recentWindowHours.value,
+    taskInput: fields.taskInput.value,
+    unitUsagePercent: fields.unitUsagePercent.value,
+    plannedRuns: fields.plannedRuns.value,
+    maxRetries: fields.maxRetries.value,
+    lastUpdatedAt,
+  };
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(advisorHistory));
+  localStorage.setItem(USAGE_RECORDS_KEY, JSON.stringify(usageRecords));
+}
+
+function loadSession() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (raw) {
+    try {
+      const snapshot = JSON.parse(raw);
+      Object.keys(fields).forEach((key) => {
+        if (typeof snapshot[key] === "string") {
+          fields[key].value = snapshot[key];
+        }
+      });
+      if (typeof snapshot.lastUpdatedAt === "string") {
+        lastUpdatedAt = snapshot.lastUpdatedAt;
+      }
+    } catch {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  }
+
+  const historyRaw = localStorage.getItem(HISTORY_KEY);
+  if (historyRaw) {
+    try {
+      const parsed = JSON.parse(historyRaw);
+      advisorHistory = Array.isArray(parsed) ? parsed.slice(0, 6) : [];
+    } catch {
+      localStorage.removeItem(HISTORY_KEY);
+    }
+  }
+
+  const usageRaw = localStorage.getItem(USAGE_RECORDS_KEY);
+  if (usageRaw) {
+    try {
+      const parsed = JSON.parse(usageRaw);
+      usageRecords = Array.isArray(parsed) ? parsed.slice(0, 12) : [];
+    } catch {
+      localStorage.removeItem(USAGE_RECORDS_KEY);
+    }
+  }
+}
+
+function buildUsageSnapshot() {
+  const remainingPercent = parseNumber(fields.remainingPercent.value);
+  const recentUsageDrop = parseNumber(fields.recentUsageDrop.value);
+  const recentWindowHours = parseNumber(fields.recentWindowHours.value);
+  const resetDate = fields.resetAt.value ? new Date(fields.resetAt.value) : null;
+  const now = new Date();
+
+  const resetMs = resetDate instanceof Date && !Number.isNaN(resetDate.getTime())
+    ? resetDate.getTime() - now.getTime()
+    : null;
+
+  const burnRatePerHour =
+    recentUsageDrop !== null && recentWindowHours !== null && recentWindowHours > 0
+      ? recentUsageDrop / recentWindowHours
+      : null;
+
+  const burnRatePerDay = burnRatePerHour !== null ? burnRatePerHour * 24 : null;
+  const exhaustionHours =
+    burnRatePerHour !== null && burnRatePerHour > 0 && remainingPercent !== null
+      ? remainingPercent / burnRatePerHour
+      : null;
+
+  const safeAllowance =
+    resetMs !== null && resetMs > 0 && remainingPercent !== null
+      ? remainingPercent / Math.max(resetMs / 86400000, 1)
+      : null;
+
+  const surviveToReset =
+    resetMs !== null && resetMs > 0 && exhaustionHours !== null
+      ? exhaustionHours >= resetMs / 3600000
+      : null;
+
+  return {
+    provider: fields.provider.value,
+    planType: fields.planType.value.trim(),
+    remainingPercent,
+    resetDate,
+    resetMs,
+    burnRatePerHour,
+    burnRatePerDay,
+    exhaustionHours,
+    safeAllowance,
+    surviveToReset,
+  };
+}
+
+function setUsageStatus(status, title, reason) {
+  ui.usageStatusPanel.dataset.status = status;
+  ui.usageStatusText.textContent = title;
+  ui.usageStatusReason.textContent = reason;
+}
+
+function updateCountdown() {
+  const snapshot = buildUsageSnapshot();
+  ui.countdownDisplay.textContent =
+    snapshot.resetMs === null ? "—" : formatDuration(snapshot.resetMs);
+}
+
+function updateFreshness() {
+  if (!lastUpdatedAt) {
+    ui.freshnessTag.textContent = "Data freshness: manual data not refreshed yet";
+    return;
+  }
+
+  const ageMs = Date.now() - new Date(lastUpdatedAt).getTime();
+  const ageMinutes = Math.max(0, Math.floor(ageMs / 60000));
+  const nextRecommended = new Date(new Date(lastUpdatedAt).getTime() + REFRESH_INTERVAL_MINUTES * 60000);
+  ui.freshnessTag.textContent =
+    `Data freshness: ${ageMinutes} min ago · next recommended refresh ${formatDateTime(nextRecommended)}`;
+}
+
+function updateDashboard() {
+  const snapshot = buildUsageSnapshot();
+
+  ui.remainingDisplay.textContent = formatPercent(snapshot.remainingPercent);
+  ui.resetDisplay.textContent = formatDateTime(snapshot.resetDate);
+  ui.updatedDisplay.textContent = lastUpdatedAt ? formatDateTime(new Date(lastUpdatedAt)) : "—";
+  ui.burnRateDisplay.textContent =
+    snapshot.burnRatePerDay !== null ? `${snapshot.burnRatePerDay.toFixed(1)}% / day` : "—";
+  ui.exhaustionDisplay.textContent =
+    snapshot.exhaustionHours !== null
+      ? formatDateTime(new Date(Date.now() + snapshot.exhaustionHours * 3600000))
+      : "—";
+  ui.surviveDisplay.textContent =
+    snapshot.surviveToReset === null ? "—" : snapshot.surviveToReset ? "YES" : "NO";
+  ui.allowanceDisplay.textContent =
+    snapshot.safeAllowance !== null ? `${snapshot.safeAllowance.toFixed(1)}% / day` : "—";
+
+  if (
+    snapshot.remainingPercent === null ||
+    !snapshot.resetDate ||
+    Number.isNaN(snapshot.resetDate.getTime())
+  ) {
+    setUsageStatus("idle", "等待輸入", "先填 Remaining % 與 Reset time，Runway 才能成立。");
+    ui.dailySummary.textContent = "Today: 先輸入 Remaining %、Reset、最近掉多少，再問下一件事。";
+  } else if (snapshot.remainingPercent <= 10 || snapshot.surviveToReset === false) {
+    setUsageStatus("critical", "CRITICAL", "照目前速度可能撐不到 reset，建議減載或等待。");
+    ui.dailySummary.textContent = "Today: 高風險。先省用量、換輕量模型，必要時等 reset。";
+  } else if (snapshot.remainingPercent <= 30 || snapshot.burnRatePerDay >= 25) {
+    setUsageStatus("high", "HIGH", "目前還能用，但已接近高風險區，下一件事要先算。");
+    ui.dailySummary.textContent = "Today: 還能做，但每個任務都先跑 advisor，避免把剩餘空間打穿。";
+  } else {
+    setUsageStatus("safe", "SAFE", "目前 usage 還在安全區，可繼續做重要任務。");
+    ui.dailySummary.textContent = "Today: 狀態安全，可以先做高價值任務，再回頭處理次要工作。";
+  }
+
+  updateFreshness();
+  updateCountdown();
+  saveSession();
+}
+
+function estimateTaskComplexity(taskText) {
+  const text = taskText.toLowerCase();
+  let low = 2;
+  let high = 6;
+
+  if (/(quick|小改|微調|summary|summarize|翻譯|rewrite|email|reply)/.test(text)) {
+    low = 1;
+    high = 3;
+  }
+
+  if (/(debug|bug|fix|code|codex|analy|review|refactor|test|讀.*檔案|read.*file)/.test(text)) {
+    low = 4;
+    high = 10;
+  }
+
+  if (/(research|report|long|multi|agent|workflow|architecture|plan|product|market)/.test(text)) {
+    low = 7;
+    high = 16;
+  }
+
+  if (/(video|image|runway|heygen|kling|generate|batch|storyboard)/.test(text)) {
+    low = 10;
+    high = 22;
+  }
+
+  return { low, high };
+}
+
+function estimateTaskUsageRange() {
+  const taskText = fields.taskInput.value.trim();
+  const manualUnit = parseNumber(fields.unitUsagePercent.value);
+  const plannedRuns = parseNumber(fields.plannedRuns.value);
+  const maxRetries = parseNumber(fields.maxRetries.value);
+  const keywordRange = estimateTaskComplexity(taskText);
+
+  if (manualUnit !== null && plannedRuns !== null && maxRetries !== null) {
+    const low = manualUnit * Math.max(plannedRuns, 1);
+    const high = manualUnit * (Math.max(plannedRuns, 1) + maxRetries);
+    return { low, high };
+  }
+
+  return keywordRange;
+}
+
+function recommendRoute(snapshot, highUsageEstimate) {
+  const remaining = snapshot.remainingPercent;
+  const provider = snapshot.provider;
+  const plan = snapshot.planType || "current plan";
+
+  if (remaining === null) {
+    return {
+      decision: "WAIT",
+      panelStatus: "wait",
+      route: "先補 usage data",
+      provider: `${provider} · ${plan}`,
+      reason: "沒有 Remaining %，現在不能可信地建議下一步。",
+    };
+  }
+
+  const predictedRemaining = remaining - highUsageEstimate;
+
+  if (predictedRemaining < 10 || snapshot.surviveToReset === false) {
+    return {
+      decision: "WAIT",
+      panelStatus: "wait",
+      route: "等 reset / 改低成本路線",
+      provider: "Other · cheaper / lighter model",
+      reason: "這件事做下去後，剩餘空間太小，建議延後或換更省的模型。",
+    };
+  }
+
+  if (predictedRemaining < 25 || highUsageEstimate >= 12) {
+    return {
+      decision: "SAVE",
+      panelStatus: "save",
+      route: "降模型或縮範圍",
+      provider: provider === "Codex" ? "Codex · lighter reasoning tier" : `${provider} · lower-cost tier`,
+      reason: "可以做，但先省著用：縮小 scope、減少 retries、選便宜 tier 較划算。",
+    };
+  }
+
+  return {
+    decision: "GO",
+    panelStatus: "go",
+    route: "直接做",
+    provider: provider === "Other" ? `${provider} · current best-value tier` : `${provider} · current plan`,
+    reason: "做完後仍有夠用的剩餘空間，現在可以直接開始。",
+  };
+}
+
+function renderHistory() {
+  if (advisorHistory.length === 0) {
+    ui.historyList.innerHTML = "<li>No local advisor history yet.</li>";
+    return;
+  }
+
+  ui.historyList.innerHTML = advisorHistory
+    .map((entry) => `<li><strong>${entry.decision}</strong> · ${entry.range} · ${entry.provider} · ${entry.timestamp}</li>`)
+    .join("");
+}
+
+function renderUsageRecords() {
+  if (usageRecords.length === 0) {
+    ui.usageRecordsList.innerHTML = "<li>No local usage records yet.</li>";
+    return;
+  }
+
+  ui.usageRecordsList.innerHTML = usageRecords
+    .map((entry) => `<li><strong>${entry.remaining}</strong> left · ${entry.provider} · ${entry.note} · ${entry.timestamp}</li>`)
+    .join("");
+}
+
+function calculateSavingsMeter() {
+  const spendBase =
+    usageRecords.length > 0
+      ? clamp(
+          usageRecords.reduce((sum, entry) => {
+            const remaining = Number.parseFloat(String(entry.remaining).replace("%", ""));
+            if (!Number.isFinite(remaining)) return sum;
+            return sum + Math.max(0, 100 - remaining);
+          }, 0) / usageRecords.length / 100 * DEFAULT_MONTHLY_AI_SPEND,
+          0,
+          DEFAULT_MONTHLY_AI_SPEND
+        )
+      : 0;
+
+  const advisorSignals = advisorHistory.reduce(
+    (acc, entry) => {
+      const match = String(entry.range).match(/([\d.]+)%\s*–\s*([\d.]+)%/);
+      if (!match) return acc;
+      const high = Number(match[2]);
+      if (!Number.isFinite(high)) return acc;
+
+      if (entry.decision === "WAIT") {
+        acc.avoided += high;
+      } else if (entry.decision === "SAVE") {
+        acc.avoided += high * 0.5;
+      }
+      return acc;
+    },
+    { avoided: 0 }
+  );
+
+  const estimatedAvoidedWaste = spendBase * (advisorSignals.avoided / 100);
+  const estimatedSpend = spendBase;
+  const netSavings = estimatedAvoidedWaste;
+  const pricingReference = netSavings * 0.1;
+
+  ui.avoidedWasteDisplay.textContent = formatMoney(estimatedAvoidedWaste);
+  ui.estimatedSpendDisplay.textContent = formatMoney(estimatedSpend);
+  ui.netSavingsDisplay.textContent = formatMoney(netSavings);
+  ui.pricingReferenceDisplay.textContent = formatMoney(pricingReference);
+
+  if (advisorHistory.length === 0 || usageRecords.length === 0) {
+    ui.savingsText.textContent = "Savings meter needs both usage records and advisor decisions. Current number is still estimated and partial.";
+    ui.savingsMethodNote.textContent = "Estimated only. We treat WAIT as 100% avoided task waste, SAVE as 50% avoided waste, then convert usage % to dollars from local evidence.";
+  } else {
+    ui.savingsText.textContent = `Estimated net savings this month: ${formatMoney(netSavings)}. This is explainable planning math, not billing-grade truth.`;
+    ui.savingsMethodNote.textContent = "Estimated only. Formula: local usage records approximate monthly AI spend; WAIT counts as avoided full task waste, SAVE counts as avoided half task waste; price reference = savings × 10%.";
+  }
+
+  return {
+    estimatedAvoidedWaste,
+    estimatedSpend,
+    netSavings,
+    pricingReference,
+  };
+}
+
+function addUsageRecord(note) {
+  const snapshot = buildUsageSnapshot();
+  if (snapshot.remainingPercent === null) {
+    return;
+  }
+
+  usageRecords = [
+    {
+      remaining: formatPercent(snapshot.remainingPercent),
+      provider: fields.provider.value,
+      note,
+      timestamp: formatDateTime(new Date()),
+    },
+    ...usageRecords,
+  ].slice(0, 12);
+
+  renderUsageRecords();
+  saveSession();
+}
+
+function analyzeTask() {
+  const snapshot = buildUsageSnapshot();
+  const taskText = fields.taskInput.value.trim();
+
+  if (!taskText) {
+    ui.advisorPanel.dataset.status = "idle";
+    ui.advisorDecision.textContent = "請先描述任務";
+    ui.advisorReason.textContent = "輸入 What do you want to do next? 再按 Analyze next task。";
+    return;
+  }
+
+  const range = estimateTaskUsageRange();
+  const route = recommendRoute(snapshot, range.high);
+  const predictedRemaining = snapshot.remainingPercent !== null
+    ? clamp(snapshot.remainingPercent - range.high, 0, 100)
+    : null;
+
+  ui.advisorPanel.dataset.status = route.panelStatus;
+  ui.advisorDecision.textContent = route.decision;
+  ui.advisorReason.textContent = route.reason;
+  ui.advisorActionLine.textContent =
+    route.decision === "GO"
+      ? "下一步：直接開始，但先保持目前 scope，不要額外增加 retries。"
+      : route.decision === "SAVE"
+        ? "下一步：先縮小範圍或改便宜 tier，再開始。"
+        : "下一步：先不要做，等 reset 或改成更省的做法。";
+  ui.advisorRange.textContent = `${range.low.toFixed(1)}% – ${range.high.toFixed(1)}%`;
+  ui.advisorRemaining.textContent = predictedRemaining === null ? "—" : formatPercent(predictedRemaining);
+  ui.advisorProvider.textContent = route.provider;
+  ui.advisorRoute.textContent = route.route;
+
+  advisorHistory = [
+    {
+      decision: route.decision,
+      range: `${range.low.toFixed(1)}% – ${range.high.toFixed(1)}%`,
+      provider: route.provider,
+      timestamp: formatDateTime(new Date()),
+    },
+    ...advisorHistory,
+  ].slice(0, 6);
+
+  const hasRealAvoidanceSignal = route.decision !== "GO" && snapshot.remainingPercent !== null;
+  ui.savingsText.textContent = hasRealAvoidanceSignal
+    ? `Potential savings identified: this task may consume up to ${range.high.toFixed(1)}% usage. Advisor currently suggests ${route.decision}, but this is still planning evidence — not verified savings yet.`
+    : "No verified savings yet. Start using task advice and refresh data manually to build real evidence.";
+
+  renderHistory();
+  addUsageRecord(`Advisor=${route.decision} / Task planned`);
+  calculateSavingsMeter();
+  saveSession();
+}
+
+function refreshNow() {
+  lastUpdatedAt = new Date().toISOString();
+  updateDashboard();
+  addUsageRecord("Manual refresh");
+}
+
+function resetSession() {
+  Object.values(fields).forEach((field) => {
+    if (field.tagName === "SELECT") {
+      field.selectedIndex = 0;
+    } else {
+      field.value = "";
+    }
+  });
+
+  lastUpdatedAt = null;
+  advisorHistory = [];
+  usageRecords = [];
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(HISTORY_KEY);
+  localStorage.removeItem(USAGE_RECORDS_KEY);
+  ui.advisorPanel.dataset.status = "idle";
+  ui.advisorDecision.textContent = "尚未分析";
+  ui.advisorReason.textContent = "按下 Analyze next task 後，才會計算建議。";
+  ui.advisorRange.textContent = "—";
+  ui.advisorRemaining.textContent = "—";
+  ui.advisorProvider.textContent = "—";
+  ui.advisorRoute.textContent = "—";
+  ui.advisorActionLine.textContent = "下一步：先更新 usage，再決定要不要開始。";
+  ui.savingsText.textContent = "No verified savings yet. Start using task advice and refresh data manually to build real evidence.";
+  renderHistory();
+  renderUsageRecords();
+  calculateSavingsMeter();
+  updateDashboard();
+}
+
+Object.values(fields).forEach((field) => {
+  field.addEventListener("input", updateDashboard);
+  field.addEventListener("change", updateDashboard);
+});
+
+ui.refreshButton.addEventListener("click", refreshNow);
+ui.quickRefreshButton.addEventListener("click", refreshNow);
+ui.resetButton.addEventListener("click", resetSession);
+ui.analyzeTaskButton.addEventListener("click", analyzeTask);
+ui.quickAnalyzeButton.addEventListener("click", () => {
+  fields.taskInput.focus();
+  fields.taskInput.scrollIntoView({ behavior: "smooth", block: "center" });
+});
+ui.quickLogButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    fields.recentUsageDrop.value = button.dataset.drop;
+    fields.recentWindowHours.value = button.dataset.hours;
+    refreshNow();
+  });
+});
+
+loadSession();
+renderHistory();
+renderUsageRecords();
+updateDashboard();
+calculateSavingsMeter();
+setInterval(updateCountdown, 1000);
+
+</script>
+</body>
+</html>
