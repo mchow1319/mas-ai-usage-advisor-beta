@@ -8,17 +8,16 @@
 :root {
   color-scheme: dark;
   --bg: #0b1020;
-  --panel: rgba(16, 22, 46, 0.96);
-  --panel-soft: #121935;
-  --border: #2a3868;
+  --panel: rgba(15, 21, 44, 0.96);
+  --panel-soft: #111835;
+  --border: #2a3869;
   --text: #edf2ff;
   --muted: #9ca9d5;
   --accent: #89a2ff;
-  --go: #2aca8c;
+  --go: #2ac98b;
   --save: #ffbf57;
-  --wait: #ff7286;
-  --idle: #7283ba;
-  --shadow: 0 20px 46px rgba(0, 0, 0, 0.28);
+  --wait: #ff7387;
+  --shadow: 0 20px 44px rgba(0, 0, 0, 0.28);
 }
 
 * {
@@ -30,7 +29,7 @@ body {
   font-family: Inter, "Noto Sans TC", "Segoe UI", sans-serif;
   color: var(--text);
   background:
-    radial-gradient(circle at top, rgba(72, 104, 255, 0.22), transparent 34%),
+    radial-gradient(circle at top, rgba(72, 104, 255, 0.24), transparent 34%),
     var(--bg);
 }
 
@@ -42,9 +41,35 @@ p {
 }
 
 .app-shell {
-  width: min(100% - 20px, 760px);
+  width: min(100% - 20px, 680px);
   margin: 0 auto;
-  padding: 18px 0 44px;
+  padding: 22px 0 48px;
+}
+
+.hero {
+  margin-bottom: 18px;
+}
+
+h1 {
+  margin-bottom: 8px;
+  font-size: clamp(2rem, 9vw, 3rem);
+  line-height: 1.04;
+}
+
+.subtitle,
+.footnote,
+.source-line,
+.resource-status p,
+.reason-line,
+.savings-text,
+.label,
+.field span {
+  color: var(--muted);
+}
+
+.subtitle {
+  margin-bottom: 0;
+  line-height: 1.55;
 }
 
 .card {
@@ -55,105 +80,103 @@ p {
   box-shadow: var(--shadow);
 }
 
-.hero {
-  margin-bottom: 16px;
+.card + .card,
+.result-block {
+  margin-top: 14px;
 }
 
-.hero-kicker,
-.section-kicker {
-  margin: 0 0 8px;
-  color: var(--accent);
-  font-size: 0.8rem;
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.label {
+  margin: 0 0 6px;
+  font-size: 0.82rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-h1 {
-  margin-bottom: 10px;
-  font-size: clamp(1.9rem, 7vw, 3rem);
-  line-height: 1.06;
+.source-line,
+.savings-mode {
+  margin: 0;
+  font-size: 0.95rem;
 }
 
-.subtitle,
-.status-reason,
-.save-hint,
-.history-list,
-.status-label,
-.field span,
-.support-metric span {
-  color: var(--muted);
+.source-line span,
+.savings-mode {
+  color: var(--text);
 }
 
-.subtitle {
-  margin-bottom: 0;
-  line-height: 1.55;
-}
-
-.compact-subtitle {
-  margin-bottom: 0;
-}
-
-.product-flow {
-  display: grid;
-  gap: 14px;
-}
-
-.compact-heading {
-  margin-bottom: 14px;
-}
-
-.section-heading {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  align-items: flex-start;
-}
-
-.source-pill {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(137, 162, 255, 0.34);
-  background: rgba(137, 162, 255, 0.12);
-  font-size: 0.82rem;
-}
-
-.resource-hero {
-  margin-bottom: 14px;
-}
-
-.resource-value {
+.remaining-line {
   margin-bottom: 6px;
-  font-size: 1.02rem;
+  font-size: 1rem;
   color: var(--muted);
 }
 
-.resource-value strong {
-  font-size: clamp(2rem, 10vw, 3.4rem);
+.remaining-line strong {
+  font-size: clamp(2.2rem, 12vw, 4rem);
   line-height: 1;
   color: var(--text);
 }
 
-.resource-reset,
-.resource-countdown {
+.reset-line,
+.countdown-line {
   margin-bottom: 4px;
   font-size: 1rem;
 }
 
-.resource-inline-grid,
-.field-grid,
-.advanced-grid,
-.support-metrics,
-.decision-support {
-  display: grid;
-  gap: 12px;
+.resource-status,
+.followup-box {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(137, 162, 255, 0.22);
+  background: rgba(137, 162, 255, 0.08);
 }
 
-.resource-inline-grid,
-.advanced-grid {
+.resource-status[data-status="go"] {
+  border-color: rgba(42, 201, 139, 0.36);
+  background: rgba(42, 201, 139, 0.12);
+}
+
+.resource-status[data-status="save"] {
+  border-color: rgba(255, 191, 87, 0.36);
+  background: rgba(255, 191, 87, 0.12);
+}
+
+.resource-status[data-status="wait"] {
+  border-color: rgba(255, 115, 135, 0.36);
+  background: rgba(255, 115, 135, 0.12);
+}
+
+.resource-editor {
+  margin-top: 14px;
+}
+
+.hidden {
+  display: none;
+}
+
+.resource-editor-grid,
+.resource-editor-actions,
+.followup-actions,
+.savings-metrics {
+  display: grid;
+  gap: 10px;
+}
+
+.resource-editor-grid,
+.savings-metrics {
   grid-template-columns: 1fr;
+}
+
+.resource-editor-actions,
+.followup-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .field {
@@ -163,7 +186,7 @@ h1 {
 
 .field input,
 .field select,
-.field textarea {
+textarea {
   width: 100%;
   border: 1px solid var(--border);
   border-radius: 16px;
@@ -171,38 +194,18 @@ h1 {
   color: var(--text);
   padding: 14px 15px;
   font-size: 1rem;
+}
+
+textarea {
+  min-height: 108px;
   resize: vertical;
 }
 
 .field input:focus,
 .field select:focus,
-.field textarea:focus {
+textarea:focus {
   outline: 2px solid rgba(137, 162, 255, 0.42);
   border-color: var(--accent);
-}
-
-.advanced-panel {
-  margin-top: 14px;
-  border: 1px solid rgba(137, 162, 255, 0.18);
-  border-radius: 18px;
-  background: rgba(137, 162, 255, 0.06);
-  padding: 14px;
-}
-
-.advanced-panel summary {
-  cursor: pointer;
-  font-weight: 700;
-}
-
-.advanced-panel[open] summary {
-  margin-bottom: 12px;
-}
-
-.actions {
-  margin-top: 14px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
 }
 
 .primary-button,
@@ -217,7 +220,7 @@ h1 {
 
 .primary-button {
   border: 1px solid rgba(137, 162, 255, 0.4);
-  background: linear-gradient(180deg, #4a69ff, #3954d8);
+  background: linear-gradient(180deg, #4a68ff, #3753d6);
 }
 
 .ghost-button {
@@ -225,116 +228,83 @@ h1 {
   background: transparent;
 }
 
-.full-button {
+.compact-button {
+  padding-inline: 14px;
+}
+
+.ask-button {
   width: 100%;
-  justify-content: center;
+  margin-top: 14px;
 }
 
-.quick-log-grid {
-  margin-top: 12px;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
+.result-arrow {
+  text-align: center;
+  margin: 8px 0;
+  font-size: 1.6rem;
+  color: var(--muted);
 }
 
-.support-metric {
+.result-card {
+  text-align: left;
+}
+
+#advisor-decision {
+  margin-bottom: 8px;
+  font-size: clamp(2.5rem, 15vw, 4.5rem);
+  line-height: 1;
+}
+
+.decision-line {
+  margin-bottom: 8px;
+  font-size: 1.06rem;
+  line-height: 1.55;
+}
+
+.reason-line {
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+.savings-metric {
   border: 1px solid var(--border);
   border-radius: 18px;
   background: var(--panel-soft);
   padding: 14px;
 }
 
-.support-metric strong {
+.savings-metric span {
   display: block;
-  margin-top: 6px;
-  font-size: 1.08rem;
-  line-height: 1.35;
-}
-
-.decision-arrow {
-  text-align: center;
-  font-size: 1.7rem;
   color: var(--muted);
+  margin-bottom: 6px;
 }
 
-.status-panel,
-.advisor-panel,
-.savings-panel {
-  border-radius: 20px;
-  padding: 16px;
-  border: 1px solid rgba(114, 131, 186, 0.34);
-  background: rgba(114, 131, 186, 0.14);
+.savings-metric strong {
+  display: block;
+  font-size: 1.35rem;
+  line-height: 1.3;
 }
 
-.status-panel[data-status="safe"],
-.advisor-panel[data-status="go"] {
-  border-color: rgba(42, 202, 140, 0.38);
-  background: rgba(42, 202, 140, 0.14);
-}
-
-.status-panel[data-status="high"],
-.advisor-panel[data-status="save"] {
-  border-color: rgba(255, 191, 87, 0.4);
-  background: rgba(255, 191, 87, 0.14);
-}
-
-.status-panel[data-status="critical"],
-.advisor-panel[data-status="wait"] {
-  border-color: rgba(255, 114, 134, 0.42);
-  background: rgba(255, 114, 134, 0.14);
-}
-
-.decision-value {
-  margin-bottom: 10px;
-  font-size: clamp(2.2rem, 12vw, 4rem);
-  line-height: 1;
-}
-
-.decision-copy {
-  margin-bottom: 10px;
-  font-size: 1.04rem;
+.savings-text {
+  margin: 14px 0 0;
   line-height: 1.55;
 }
 
-.savings-highlight {
-  margin-bottom: 8px;
-  font-size: 1rem;
-  color: var(--muted);
-}
-
-.savings-highlight strong {
-  font-size: clamp(1.9rem, 9vw, 3rem);
-  line-height: 1;
-  color: var(--text);
-}
-
-.history-block {
-  margin-top: 16px;
-}
-
-.history-list {
-  margin: 0;
-  padding-left: 18px;
-  line-height: 1.6;
+.footnote {
+  margin: 12px 0 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
 }
 
 @media (min-width: 720px) {
   .app-shell {
-    width: min(100% - 32px, 760px);
-    padding-top: 24px;
+    width: min(100% - 32px, 680px);
   }
 
-  .resource-inline-grid {
+  .resource-editor-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .advanced-grid,
-  .support-metrics,
-  .decision-support {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .quick-log-grid {
+  .savings-metrics {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
@@ -343,36 +313,32 @@ h1 {
 </head>
 <body>
   <main class="app-shell">
-    <section class="hero card">
-      <p class="hero-kicker">MAS AI Usage Advisor</p>
-      <h1>Use the right AI work at the right time.</h1>
-      <p class="subtitle">Tell MAS what you have left and what you want to do. It will answer with GO, SAVE, or WAIT.</p>
+    <section class="hero">
+      <h1>Your AI Resources</h1>
+      <p class="subtitle">Use the right AI work at the right time.</p>
     </section>
 
-    <section class="product-flow">
-      <section class="card resources-card">
-        <div class="section-heading compact-heading">
-          <div>
-            <p class="section-kicker">Your AI Resources</p>
-          </div>
-          <span class="source-pill" id="source-display">Estimated</span>
+    <section class="card resources-card">
+      <div class="card-head">
+        <div>
+          <p class="label">AI Resources</p>
+          <p class="source-line"><span id="source-display">Estimated</span></p>
         </div>
+        <button type="button" id="toggle-resource-editor" class="ghost-button compact-button">Update</button>
+      </div>
 
-        <div class="status-panel" id="resource-status-panel" data-status="idle">
-          <p class="status-label">Resource status</p>
-          <h3 id="resource-status-text">Add your current AI usage</h3>
-          <p id="resource-status-reason" class="status-reason">MAS will treat these numbers as estimated unless a provider has a reliable sync source.</p>
-        </div>
+      <div class="resource-summary">
+        <p class="remaining-line"><strong id="remaining-display">—</strong> LEFT</p>
+        <p class="reset-line">Reset: <span id="reset-display">—</span></p>
+        <p class="countdown-line" id="countdown-display">—</p>
+      </div>
 
-        <div class="resource-hero">
-          <div class="resource-main">
-            <p class="resource-value"><strong id="remaining-display">—</strong> LEFT</p>
-            <p class="resource-reset">Reset: <span id="reset-display">—</span></p>
-            <p class="resource-countdown" id="countdown-display">—</p>
-          </div>
-        </div>
+      <div class="resource-status" id="resource-status">
+        <p id="resource-status-text">Set your current AI estimate to start.</p>
+      </div>
 
-        <div class="resource-inline-grid">
+      <div id="resource-editor" class="resource-editor hidden">
+        <div class="resource-editor-grid">
           <label class="field">
             <span>Provider</span>
             <select id="provider">
@@ -395,231 +361,122 @@ h1 {
           </label>
         </div>
 
-        <details class="advanced-panel">
-          <summary>More resource details</summary>
-
-          <div class="field-grid advanced-grid">
-            <label class="field">
-              <span>Plan / quota type</span>
-              <input id="planType" type="text" placeholder="例如 Pro / Max / Team">
-            </label>
-
-            <label class="field">
-              <span>Known usage drop %</span>
-              <input id="recentUsageDrop" type="number" min="0" step="0.1" inputmode="decimal" placeholder="8">
-            </label>
-
-            <label class="field">
-              <span>Measured over hours</span>
-              <input id="recentWindowHours" type="number" min="0.1" step="0.1" inputmode="decimal" placeholder="6">
-            </label>
-          </div>
-
-          <div class="support-metrics">
-            <div class="support-metric">
-              <span>Last updated</span>
-              <strong id="updated-display">—</strong>
-            </div>
-            <div class="support-metric">
-              <span>Burn rate</span>
-              <strong id="burn-rate-display">—</strong>
-            </div>
-            <div class="support-metric">
-              <span>Will it last?</span>
-              <strong id="survive-display">—</strong>
-            </div>
-          </div>
-
-          <div class="quick-log-grid">
-            <button type="button" class="ghost-button quick-log-button" data-drop="5" data-hours="24">Known drop 5%</button>
-            <button type="button" class="ghost-button quick-log-button" data-drop="10" data-hours="24">Known drop 10%</button>
-            <button type="button" class="ghost-button quick-log-button" data-drop="15" data-hours="24">Known drop 15%</button>
-          </div>
-        </details>
-
-        <div class="actions">
-          <button type="button" id="refresh-button" class="ghost-button">Update resources</button>
-          <button type="button" id="reset-button" class="ghost-button">Reset</button>
+        <div class="resource-editor-actions">
+          <button type="button" id="save-resource-estimate" class="primary-button compact-button">Save estimate</button>
+          <button type="button" id="resource-minus-five" class="ghost-button compact-button">-5%</button>
+          <button type="button" id="resource-reset-full" class="ghost-button compact-button">Reset to 100%</button>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section class="card project-card">
-        <div class="section-heading compact-heading">
-          <div>
-            <p class="section-kicker">What are you doing?</p>
-          </div>
+    <section class="card task-card">
+      <p class="label">What are you working on?</p>
+      <textarea id="taskInput" rows="4" placeholder="Tell MAS what you want to do..."></textarea>
+      <button type="button" id="ask-mas-button" class="primary-button ask-button">Ask MAS</button>
+      <div id="followup-box" class="followup-box hidden">
+        <p id="followup-text">Need one quick detail.</p>
+        <div class="followup-actions">
+          <button type="button" class="ghost-button followup-choice" data-choice="new">New project</button>
+          <button type="button" class="ghost-button followup-choice" data-choice="existing">Existing project</button>
+          <button type="button" class="ghost-button followup-choice" data-choice="repeating">Repeating project</button>
         </div>
+      </div>
+    </section>
 
-        <div class="project-type-row">
-          <label class="field">
-            <span>Project type</span>
-            <select id="projectType">
-              <option value="new">New Project</option>
-              <option value="existing">Existing Project</option>
-              <option value="repeating">Repeating Project</option>
-            </select>
-          </label>
-        </div>
+    <section class="result-block">
+      <div class="result-arrow">↓</div>
 
-        <label class="field">
-          <span>Task</span>
-          <textarea id="taskInput" rows="3" placeholder="用一句話描述目前要做的事……"></textarea>
-        </label>
-
-        <details class="advanced-panel">
-          <summary>Task estimate details</summary>
-
-          <div class="field-grid advanced-grid">
-            <label class="field">
-              <span>Estimated usage per run %</span>
-              <input id="unitUsagePercent" type="number" min="0" step="0.1" inputmode="decimal" placeholder="6">
-            </label>
-
-            <label class="field">
-              <span>Planned runs</span>
-              <input id="plannedRuns" type="number" min="0" step="1" inputmode="numeric" placeholder="2">
-            </label>
-
-            <label class="field">
-              <span>Max retries</span>
-              <input id="maxRetries" type="number" min="0" step="1" inputmode="numeric" placeholder="1">
-            </label>
-          </div>
-        </details>
-
-        <div class="actions">
-          <button type="button" id="analyze-task-button" class="primary-button full-button">Ask MAS</button>
-        </div>
-      </section>
-
-      <section class="decision-arrow" aria-hidden="true">↓</section>
-
-      <section class="card decision-card">
-        <div class="advisor-panel" id="advisor-panel" data-status="idle">
-          <p class="status-label">MAS Decision</p>
-          <h2 class="decision-value" id="advisor-decision">WAIT</h2>
-          <p id="advisor-action-line" class="decision-copy">先更新你的 AI resources，再問 MAS。</p>
-          <p id="advisor-reason" class="status-reason">MAS 會根據 remaining resources、reset time、project type 與 task context 做判斷。</p>
-        </div>
-
-        <div class="decision-support">
-          <div class="support-metric">
-            <span>After this task</span>
-            <strong id="advisor-remaining">—</strong>
-          </div>
-          <div class="support-metric">
-            <span>Usage range</span>
-            <strong id="advisor-range">—</strong>
-          </div>
-          <div class="support-metric">
-            <span>AI route</span>
-            <strong id="advisor-provider">—</strong>
-          </div>
-          <div class="support-metric">
-            <span>Route</span>
-            <strong id="advisor-route">—</strong>
-          </div>
-        </div>
+      <section class="card result-card">
+        <p class="label">MAS Decision</p>
+        <h2 id="advisor-decision">WAIT</h2>
+        <p id="advisor-action-line" class="decision-line">Set your AI estimate, then ask MAS.</p>
+        <p id="advisor-reason" class="reason-line">MAS uses your remaining resources, reset time, and task context to decide.</p>
       </section>
 
       <section class="card savings-card">
-        <div class="section-heading compact-heading">
+        <div class="card-head">
           <div>
-            <p class="section-kicker">Saved with MAS</p>
+            <p class="label">Your Savings</p>
+            <p class="savings-mode" id="savings-mode">Estimated</p>
           </div>
-          <span class="source-pill" id="savings-mode">Estimated</span>
         </div>
 
-        <p class="savings-highlight"><strong id="usage-saved-display">—</strong> this week</p>
-        <p id="savings-text" class="subtitle compact-subtitle">Savings appear after MAS compares your task against a baseline.</p>
-
-        <div class="support-metrics">
-          <div class="support-metric">
-            <span>Baseline</span>
-            <strong id="baseline-display">—</strong>
+        <div class="savings-metrics">
+          <div class="savings-metric">
+            <span>AI usage saved</span>
+            <strong id="usage-saved-display">—</strong>
           </div>
-          <div class="support-metric">
+          <div class="savings-metric">
             <span>Time saved</span>
             <strong id="time-saved-display">—</strong>
           </div>
-          <div class="support-metric">
+          <div class="savings-metric">
             <span>Money saved</span>
             <strong id="money-saved-display">Unavailable</strong>
           </div>
         </div>
 
-        <p class="save-hint" id="savings-method-note">Money shows only when there is reliable cost data.</p>
-
-        <div class="history-block">
-          <ul id="history-list" class="history-list">
-            <li>No project evidence yet.</li>
-          </ul>
-        </div>
+        <p id="savings-text" class="savings-text">Savings appear after MAS compares this task against a baseline.</p>
+        <p id="savings-method-note" class="footnote">Money appears only when reliable cost data exists.</p>
       </section>
     </section>
   </main>
 
   <script>
-const STORAGE_KEY = "mas-ai-usage-advisor-v03-session";
-const HISTORY_KEY = "mas-ai-usage-advisor-v03-history";
+const STORAGE_KEY = "mas-simple-user-ui-session";
+const HISTORY_KEY = "mas-simple-user-ui-history";
 const ANALYTICS_ENDPOINT = "https://mchow.goatcounter.com/count";
-const TIME_SAVED_PER_AVOIDED_RUN_MINUTES = 8;
 const RELIABLE_COST_DATA_AVAILABLE = false;
+const DEFAULT_CYCLE_DAYS = 7;
 
 const fields = {
   provider: document.getElementById("provider"),
-  planType: document.getElementById("planType"),
   remainingPercent: document.getElementById("remainingPercent"),
   resetAt: document.getElementById("resetAt"),
-  recentUsageDrop: document.getElementById("recentUsageDrop"),
-  recentWindowHours: document.getElementById("recentWindowHours"),
-  projectType: document.getElementById("projectType"),
   taskInput: document.getElementById("taskInput"),
-  unitUsagePercent: document.getElementById("unitUsagePercent"),
-  plannedRuns: document.getElementById("plannedRuns"),
-  maxRetries: document.getElementById("maxRetries"),
 };
 
 const ui = {
   sourceDisplay: document.getElementById("source-display"),
-  resourceStatusPanel: document.getElementById("resource-status-panel"),
-  resourceStatusText: document.getElementById("resource-status-text"),
-  resourceStatusReason: document.getElementById("resource-status-reason"),
   remainingDisplay: document.getElementById("remaining-display"),
   resetDisplay: document.getElementById("reset-display"),
   countdownDisplay: document.getElementById("countdown-display"),
-  updatedDisplay: document.getElementById("updated-display"),
-  burnRateDisplay: document.getElementById("burn-rate-display"),
-  surviveDisplay: document.getElementById("survive-display"),
-  advisorPanel: document.getElementById("advisor-panel"),
+  resourceStatus: document.getElementById("resource-status"),
+  resourceStatusText: document.getElementById("resource-status-text"),
+  resourceEditor: document.getElementById("resource-editor"),
+  toggleResourceEditor: document.getElementById("toggle-resource-editor"),
+  saveResourceEstimate: document.getElementById("save-resource-estimate"),
+  resourceMinusFive: document.getElementById("resource-minus-five"),
+  resourceResetFull: document.getElementById("resource-reset-full"),
+  askMasButton: document.getElementById("ask-mas-button"),
   advisorDecision: document.getElementById("advisor-decision"),
-  advisorReason: document.getElementById("advisor-reason"),
   advisorActionLine: document.getElementById("advisor-action-line"),
-  advisorRemaining: document.getElementById("advisor-remaining"),
-  advisorRange: document.getElementById("advisor-range"),
-  advisorProvider: document.getElementById("advisor-provider"),
-  advisorRoute: document.getElementById("advisor-route"),
+  advisorReason: document.getElementById("advisor-reason"),
   savingsMode: document.getElementById("savings-mode"),
-  savingsText: document.getElementById("savings-text"),
-  baselineDisplay: document.getElementById("baseline-display"),
   usageSavedDisplay: document.getElementById("usage-saved-display"),
   timeSavedDisplay: document.getElementById("time-saved-display"),
   moneySavedDisplay: document.getElementById("money-saved-display"),
+  savingsText: document.getElementById("savings-text"),
   savingsMethodNote: document.getElementById("savings-method-note"),
-  historyList: document.getElementById("history-list"),
-  refreshButton: document.getElementById("refresh-button"),
-  resetButton: document.getElementById("reset-button"),
-  analyzeTaskButton: document.getElementById("analyze-task-button"),
-  quickLogButtons: Array.from(document.querySelectorAll(".quick-log-button")),
+  followupBox: document.getElementById("followup-box"),
+  followupText: document.getElementById("followup-text"),
+  followupChoices: Array.from(document.querySelectorAll(".followup-choice")),
 };
 
-let lastUpdatedAt = null;
-let decisionHistory = [];
+let state = {
+  provider: "ChatGPT",
+  remainingPercent: null,
+  resetAt: "",
+  lastUpdatedAt: null,
+};
+
+let history = [];
+let pendingTaskText = "";
 let countdownTimer = null;
 
 function parseNumber(value) {
   const normalized = Number(value);
-  return Number.isFinite(normalized) && normalized >= 0 ? normalized : null;
+  return Number.isFinite(normalized) ? normalized : null;
 }
 
 function clamp(value, min, max) {
@@ -627,49 +484,38 @@ function clamp(value, min, max) {
 }
 
 function formatPercent(value) {
-  if (value === null || Number.isNaN(value)) return "—";
-  return `${value.toFixed(1)}%`;
+  if (!Number.isFinite(value)) return "—";
+  return `${value.toFixed(0)}%`;
 }
 
 function formatDateTime(date) {
   if (!(date instanceof Date) || Number.isNaN(date.getTime())) return "—";
-  return new Intl.DateTimeFormat("zh-TW", {
-    dateStyle: "medium",
-    timeStyle: "short",
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
   }).format(date);
 }
 
 function formatDuration(ms) {
-  if (!Number.isFinite(ms) || ms <= 0) return "Reset time reached";
+  if (!Number.isFinite(ms) || ms <= 0) return "Reset reached";
   const totalSeconds = Math.floor(ms / 1000);
   const days = Math.floor(totalSeconds / 86400);
   const hours = Math.floor((totalSeconds % 86400) / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-  const parts = [];
-  if (days > 0) parts.push(`${days}d`);
-  parts.push(`${hours}h`, `${minutes}m`, `${seconds}s`);
-  return parts.join(" ");
-}
-
-function formatHours(hours) {
-  if (!Number.isFinite(hours) || hours <= 0) return "—";
-  if (hours >= 24) {
-    return `${(hours / 24).toFixed(1)} days`;
+  if (days > 0) {
+    return `${days}d ${hours}h left`;
   }
-  return `${hours.toFixed(1)} hours`;
+  return `${hours}h ${minutes}m left`;
 }
 
 function formatMinutes(minutes) {
   if (!Number.isFinite(minutes) || minutes <= 0) return "—";
   if (minutes >= 60) {
-    return `${(minutes / 60).toFixed(1)} hours`;
+    return `${(minutes / 60).toFixed(1)} hrs`;
   }
   return `${minutes.toFixed(0)} min`;
-}
-
-function normalizeTaskText(text) {
-  return text.trim().toLowerCase().replace(/\s+/g, " ").slice(0, 140);
 }
 
 function sendAnalyticsRequest(params) {
@@ -694,7 +540,7 @@ function trackPageView() {
   sendAnalyticsRequest({
     p: window.location.pathname || "/",
     q: window.location.search || "",
-    t: document.title || "MAS AI Usage Advisor",
+    t: document.title,
     r: document.referrer || "",
     s: window.screen?.width || "",
   });
@@ -711,475 +557,423 @@ function trackAnalyticsEvent(path, title) {
   });
 }
 
-function saveSession() {
-  const snapshot = {
-    provider: fields.provider.value,
-    planType: fields.planType.value,
-    remainingPercent: fields.remainingPercent.value,
-    resetAt: fields.resetAt.value,
-    recentUsageDrop: fields.recentUsageDrop.value,
-    recentWindowHours: fields.recentWindowHours.value,
-    projectType: fields.projectType.value,
-    taskInput: fields.taskInput.value,
-    unitUsagePercent: fields.unitUsagePercent.value,
-    plannedRuns: fields.plannedRuns.value,
-    maxRetries: fields.maxRetries.value,
-    lastUpdatedAt,
-  };
-
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(decisionHistory));
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
 }
 
-function loadSession() {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (raw) {
+function loadState() {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
     try {
-      const snapshot = JSON.parse(raw);
-      Object.keys(fields).forEach((key) => {
-        if (typeof snapshot[key] === "string") {
-          fields[key].value = snapshot[key];
-        }
-      });
-      if (typeof snapshot.lastUpdatedAt === "string") {
-        lastUpdatedAt = snapshot.lastUpdatedAt;
-      }
+      const parsed = JSON.parse(stored);
+      state = { ...state, ...parsed };
     } catch {
       localStorage.removeItem(STORAGE_KEY);
     }
   }
 
-  const historyRaw = localStorage.getItem(HISTORY_KEY);
-  if (historyRaw) {
+  const storedHistory = localStorage.getItem(HISTORY_KEY);
+  if (storedHistory) {
     try {
-      const parsed = JSON.parse(historyRaw);
-      decisionHistory = Array.isArray(parsed) ? parsed.slice(0, 12) : [];
+      const parsed = JSON.parse(storedHistory);
+      history = Array.isArray(parsed) ? parsed.slice(0, 20) : [];
     } catch {
       localStorage.removeItem(HISTORY_KEY);
     }
   }
 }
 
-function buildResourceSnapshot() {
-  const remainingPercent = parseNumber(fields.remainingPercent.value);
-  const recentUsageDrop = parseNumber(fields.recentUsageDrop.value);
-  const recentWindowHours = parseNumber(fields.recentWindowHours.value);
-  const resetDate = fields.resetAt.value ? new Date(fields.resetAt.value) : null;
-  const now = new Date();
-
-  const resetMs =
-    resetDate instanceof Date && !Number.isNaN(resetDate.getTime())
-      ? resetDate.getTime() - now.getTime()
-      : null;
-
-  const burnRatePerHour =
-    recentUsageDrop !== null && recentWindowHours !== null && recentWindowHours > 0
-      ? recentUsageDrop / recentWindowHours
-      : null;
-
-  const exhaustionHours =
-    burnRatePerHour !== null && burnRatePerHour > 0 && remainingPercent !== null
-      ? remainingPercent / burnRatePerHour
-      : null;
-
-  return {
-    provider: fields.provider.value,
-    planType: fields.planType.value.trim(),
-    remainingPercent,
-    recentUsageDrop,
-    recentWindowHours,
-    burnRatePerHour,
-    resetDate,
-    resetMs,
-    exhaustionHours,
-  };
+function syncStateToInputs() {
+  fields.provider.value = state.provider || "ChatGPT";
+  fields.remainingPercent.value = Number.isFinite(state.remainingPercent) ? String(state.remainingPercent) : "";
+  fields.resetAt.value = state.resetAt || "";
 }
 
-function estimateTaskUsageRange(taskText, projectType) {
-  const manualUnit = parseNumber(fields.unitUsagePercent.value);
-  const plannedRuns = Math.max(parseNumber(fields.plannedRuns.value) ?? 1, 1);
-  const maxRetries = Math.max(parseNumber(fields.maxRetries.value) ?? 0, 0);
-  const normalized = taskText.toLowerCase();
+function maybeRollCycleForward() {
+  if (!state.resetAt) return;
+  const resetDate = new Date(state.resetAt);
+  if (Number.isNaN(resetDate.getTime())) return;
 
-  let low = 3;
-  let high = 8;
+  const now = Date.now();
+  if (now <= resetDate.getTime()) return;
 
-  if (/(copy|summary|rewrite|reply|caption|outline|brief)/.test(normalized)) {
+  while (resetDate.getTime() < now) {
+    resetDate.setDate(resetDate.getDate() + DEFAULT_CYCLE_DAYS);
+  }
+
+  state.resetAt = `${resetDate.getFullYear()}-${String(resetDate.getMonth() + 1).padStart(2, "0")}-${String(resetDate.getDate()).padStart(2, "0")}T${String(resetDate.getHours()).padStart(2, "0")}:${String(resetDate.getMinutes()).padStart(2, "0")}`;
+  state.remainingPercent = 100;
+}
+
+function renderResources() {
+  maybeRollCycleForward();
+  syncStateToInputs();
+
+  ui.sourceDisplay.textContent = `${state.provider || "AI"} · Estimated`;
+  ui.remainingDisplay.textContent = Number.isFinite(state.remainingPercent) ? formatPercent(state.remainingPercent) : "Set";
+  ui.resetDisplay.textContent = state.resetAt ? formatDateTime(new Date(state.resetAt)) : "Set reset";
+
+  if (!state.resetAt) {
+    ui.countdownDisplay.textContent = "Add reset time";
+  } else {
+    ui.countdownDisplay.textContent = formatDuration(new Date(state.resetAt).getTime() - Date.now());
+  }
+
+  if (!Number.isFinite(state.remainingPercent) || !state.resetAt) {
+    ui.resourceStatusText.textContent = "Set your current AI estimate to start.";
+    ui.resourceStatus.dataset.status = "idle";
+  } else if (state.remainingPercent <= 12) {
+    ui.resourceStatusText.textContent = "Low resources. Save them for higher-value work.";
+    ui.resourceStatus.dataset.status = "wait";
+  } else if (state.remainingPercent <= 28) {
+    ui.resourceStatusText.textContent = "Tight resources. MAS will likely suggest SAVE.";
+    ui.resourceStatus.dataset.status = "save";
+  } else {
+    ui.resourceStatusText.textContent = "You still have usable AI resources right now.";
+    ui.resourceStatus.dataset.status = "go";
+  }
+
+  saveState();
+}
+
+function normalizeTaskKey(text) {
+  return text.trim().toLowerCase().replace(/\s+/g, " ").slice(0, 120);
+}
+
+function inferProjectType(text) {
+  const normalized = text.toLowerCase();
+  const taskKey = normalizeTaskKey(text);
+  const priorMatches = history.filter((entry) => entry.taskKey === taskKey);
+
+  if (priorMatches.length >= 1 || /(again|repeat|weekly|daily|every|same task|same project|routine)/.test(normalized)) {
+    return "repeating";
+  }
+
+  if (/(new|launch|start|from scratch|idea|prototype|first time|brand new)/.test(normalized)) {
+    return "new";
+  }
+
+  return "existing";
+}
+
+function inferUrgency(text) {
+  return /(urgent|today|now|asap|deadline|ship|client waiting|immediately)/i.test(text);
+}
+
+function inferValue(text) {
+  return /(client|launch|sales|revenue|production|important|key|critical|decision)/i.test(text);
+}
+
+function estimateUsageRange(text, projectType) {
+  const normalized = text.toLowerCase();
+  let low = 4;
+  let high = 10;
+
+  if (/(reply|summary|caption|rewrite|headline|short copy|translate)/.test(normalized)) {
     low = 2;
     high = 5;
-  } else if (/(bug|debug|fix|test|review|code|codex|prompt|refactor)/.test(normalized)) {
-    low = 5;
-    high = 11;
-  } else if (/(research|plan|analysis|market|product|workflow|document)/.test(normalized)) {
+  } else if (/(debug|fix|test|code|review|prompt|refactor)/.test(normalized)) {
     low = 6;
-    high = 13;
-  } else if (/(video|image|render|story|batch|campaign|multiple)/.test(normalized)) {
-    low = 8;
+    high = 12;
+  } else if (/(research|plan|analysis|document|report|strategy)/.test(normalized)) {
+    low = 7;
+    high = 14;
+  } else if (/(video|image|batch|campaign|multi-step|workflow)/.test(normalized)) {
+    low = 9;
     high = 18;
   }
 
-  if (manualUnit !== null) {
-    low = manualUnit * plannedRuns;
-    high = manualUnit * (plannedRuns + maxRetries);
+  if (projectType === "new") {
+    high += 3;
+  } else if (projectType === "repeating") {
+    low = Math.max(2, low - 1);
+    high = Math.max(low + 1, high - 2);
   }
 
-  const typeMultiplier =
-    projectType === "new" ? 1.15 : projectType === "repeating" ? 0.9 : 1;
-
-  return {
-    low: Number((low * typeMultiplier).toFixed(1)),
-    high: Number((high * typeMultiplier).toFixed(1)),
-    plannedRuns,
-    maxRetries,
-  };
+  return { low, high };
 }
 
-function getReliableSourceLabel(provider) {
-  return `${provider} · Estimated`;
+function needsFollowup(text) {
+  const normalized = text.trim();
+  if (!normalized) return null;
+  if (normalized.split(/\s+/).length >= 4) return null;
+  if (history.length > 0) return null;
+  return "Is this a new project, an existing project, or something you do repeatedly?";
 }
 
-function setResourceStatus(status, title, reason) {
-  ui.resourceStatusPanel.dataset.status = status;
-  ui.resourceStatusText.textContent = title;
-  ui.resourceStatusReason.textContent = reason;
-}
-
-function updateCountdown() {
-  const snapshot = buildResourceSnapshot();
-  ui.countdownDisplay.textContent =
-    snapshot.resetMs === null ? "—" : formatDuration(snapshot.resetMs);
-}
-
-function updateResourcesView() {
-  const snapshot = buildResourceSnapshot();
-
-  ui.sourceDisplay.textContent = getReliableSourceLabel(snapshot.provider);
-  ui.remainingDisplay.textContent = formatPercent(snapshot.remainingPercent);
-  ui.resetDisplay.textContent = formatDateTime(snapshot.resetDate);
-  ui.updatedDisplay.textContent = lastUpdatedAt ? formatDateTime(new Date(lastUpdatedAt)) : "—";
-  ui.burnRateDisplay.textContent =
-    snapshot.burnRatePerHour !== null ? `${(snapshot.burnRatePerHour * 24).toFixed(1)}% / day` : "—";
-
-  if (snapshot.exhaustionHours !== null && snapshot.resetMs !== null) {
-    ui.surviveDisplay.textContent =
-      snapshot.exhaustionHours >= snapshot.resetMs / 3600000 ? "Yes" : "No";
-  } else {
-    ui.surviveDisplay.textContent = "—";
-  }
-
-  if (
-    snapshot.remainingPercent === null ||
-    !snapshot.resetDate ||
-    Number.isNaN(snapshot.resetDate.getTime())
-  ) {
-    setResourceStatus(
-      "idle",
-      "Add your remaining AI resources",
-      "Remaining % and reset time are required before MAS can make a reliable decision."
-    );
-  } else if (snapshot.remainingPercent <= 10) {
-    setResourceStatus(
-      "critical",
-      "Very low AI resources",
-      "You are close to running out before reset. Use only the highest-value work."
-    );
-  } else if (snapshot.remainingPercent <= 25) {
-    setResourceStatus(
-      "high",
-      "Resources are getting tight",
-      "You can still use AI, but the next task should be chosen carefully."
-    );
-  } else {
-    setResourceStatus(
-      "safe",
-      "You still have room",
-      "You have enough AI left for normal work, as long as the next task stays within scope."
-    );
-  }
-
-  updateCountdown();
-  saveSession();
-}
-
-function buildDecision(snapshot, range, projectType, taskText) {
-  if (
-    snapshot.remainingPercent === null ||
-    !snapshot.resetDate ||
-    Number.isNaN(snapshot.resetDate.getTime())
-  ) {
+function buildDecision(taskText, forcedProjectType = null) {
+  if (!Number.isFinite(state.remainingPercent) || !state.resetAt) {
     return {
       decision: "WAIT",
-      panelStatus: "wait",
-      reason: "MAS still needs your remaining AI % and reset time.",
-      action: "Update your AI resources first, then ask MAS again.",
-      providerRoute: `${snapshot.provider} · estimated`,
-      route: "Need more resource data",
+      advice: "Set your AI estimate first.",
+      reason: "MAS needs your remaining % and reset time before it can judge this task.",
+      projectType: forcedProjectType || inferProjectType(taskText),
       predictedRemaining: null,
+      range: { low: 0, high: 0 },
       actualUsage: 0,
+      route: "Need resource estimate",
     };
   }
 
-  const predictedRemaining = clamp(snapshot.remainingPercent - range.high, 0, 100);
-  const urgencyPenalty =
-    snapshot.resetMs !== null && snapshot.resetMs < 6 * 3600000 ? 6 : 0;
-  const repeatingBonus = projectType === "repeating" ? 4 : 0;
-  const threshold = predictedRemaining - urgencyPenalty + repeatingBonus;
+  const projectType = forcedProjectType || inferProjectType(taskText);
+  const range = estimateUsageRange(taskText, projectType);
+  const urgency = inferUrgency(taskText);
+  const value = inferValue(taskText);
+  const resetHours = Math.max(0, (new Date(state.resetAt).getTime() - Date.now()) / 3600000);
+  const predictedRemaining = clamp(state.remainingPercent - range.high, 0, 100);
 
-  if (threshold < 10) {
+  if (predictedRemaining < 10 && !urgency) {
     return {
       decision: "WAIT",
-      panelStatus: "wait",
-      reason: "This task would leave too little room before reset.",
-      action: "Wait for reset or turn this into a smaller, lighter task first.",
-      providerRoute: `${snapshot.provider} · lighter usage later`,
-      route: "Delay / reduce scope",
+      advice: "Wait for reset or do a lighter task first.",
+      reason: "This task would likely leave you with too little AI headroom.",
+      projectType,
       predictedRemaining,
+      range,
       actualUsage: 0,
+      route: "Delay / reduce scope",
     };
   }
 
-  if (threshold < 24 || range.high >= 12 || projectType === "new") {
+  if (predictedRemaining < 22 || resetHours < 8 || projectType === "new" || (!value && state.remainingPercent < 35)) {
     return {
       decision: "SAVE",
-      panelStatus: "save",
-      reason: "You can do it, but only if you keep the task small and avoid waste.",
-      action: "Start with one narrow pass, reduce retries, and skip non-essential work.",
-      providerRoute: `${snapshot.provider} · same provider, smaller scope`,
-      route: "Use AI carefully",
+      advice: value
+        ? "Use AI carefully and keep the task narrow."
+        : "Save your resources for higher-value AI work.",
+      reason: "MAS thinks this work can be done later or with a smaller AI pass.",
+      projectType,
       predictedRemaining,
+      range,
       actualUsage: Number((range.high * 0.55).toFixed(1)),
+      route: "Smaller AI pass",
     };
   }
 
   return {
     decision: "GO",
-    panelStatus: "go",
-    reason: "You have enough room to do this now without stressing your remaining AI.",
-    action: "Do the first pass now and update remaining resources after you finish.",
-    providerRoute: `${snapshot.provider} · current plan`,
-    route: "Go now",
+    advice: "Do one focused AI pass now.",
+    reason: "You still have enough AI resources for this task.",
+    projectType,
     predictedRemaining,
+    range,
     actualUsage: range.high,
+    route: "Use current AI resources now",
   };
 }
 
-function findRepeatingBaseline(taskKey) {
-  const matches = decisionHistory.filter((entry) => entry.taskKey === taskKey && entry.projectType === "repeating");
-  if (matches.length === 0) {
-    return null;
-  }
+function getRepeatingBaseline(taskKey) {
+  const matches = history.filter((entry) => entry.taskKey === taskKey && entry.projectType === "repeating");
+  if (matches.length === 0) return null;
 
   const baselineUsage = matches.reduce((sum, entry) => sum + entry.baselineUsage, 0) / matches.length;
-  const actualUsage = matches.reduce((sum, entry) => sum + entry.actualUsage, 0) / matches.length;
   return {
     count: matches.length,
     baselineUsage,
-    actualUsage,
   };
 }
 
-function calculateSavings(projectType, taskKey, range, decision) {
-  let savingsMode = "Estimated";
-  let baselineLabel = "Estimated baseline";
-  let baselineUsage = range.high;
-  let actualUsage = decision.actualUsage;
+function calculateSavings(taskText, decision) {
+  const taskKey = normalizeTaskKey(taskText);
+  let mode = "Estimated Savings";
+  let baselineUsage = decision.range.high;
+  let usageSavedPercent = 0;
+  let timeSavedMinutes = 0;
 
-  if (projectType === "existing") {
-    baselineUsage = Number((range.high * 1.2).toFixed(1));
-    baselineLabel = "Without-MAS baseline";
+  if (decision.projectType === "new") {
+    return {
+      taskKey,
+      mode: "Baseline only",
+      baselineUsage,
+      usageSavedPercent: null,
+      timeSavedMinutes: null,
+      moneySaved: null,
+      copy: "New project: MAS is establishing a baseline before it claims savings.",
+    };
   }
 
-  if (projectType === "repeating") {
-    const repeating = findRepeatingBaseline(taskKey);
-    if (repeating && repeating.count >= 1) {
-      savingsMode = "Measured";
-      baselineLabel = `Measured from ${repeating.count} prior run${repeating.count > 1 ? "s" : ""}`;
-      baselineUsage = Number(repeating.baselineUsage.toFixed(1));
-      actualUsage = Number(Math.min(actualUsage, repeating.actualUsage).toFixed(1));
-    } else {
-      baselineLabel = "Estimated repeating baseline";
-      baselineUsage = Number((range.high * 0.95).toFixed(1));
+  if (decision.projectType === "existing") {
+    baselineUsage = Number((decision.range.high * 1.2).toFixed(1));
+    usageSavedPercent = decision.decision === "GO"
+      ? 0
+      : clamp(((baselineUsage - decision.actualUsage) / baselineUsage) * 100, 0, 100);
+    timeSavedMinutes = usageSavedPercent > 0 ? (usageSavedPercent / 100) * 18 : 0;
+    return {
+      taskKey,
+      mode,
+      baselineUsage,
+      usageSavedPercent,
+      timeSavedMinutes,
+      moneySaved: null,
+      copy: decision.decision === "SAVE"
+        ? "Estimated Savings: MAS is reducing wasted AI work compared with your likely without-MAS path."
+        : "Estimated Savings: MAS thinks this task is still worth doing now, so savings are limited."
+    };
+  }
+
+  const repeating = getRepeatingBaseline(taskKey);
+  if (repeating) {
+    baselineUsage = Number(repeating.baselineUsage.toFixed(1));
+    usageSavedPercent = decision.decision === "GO"
+      ? 0
+      : clamp(((baselineUsage - decision.actualUsage) / baselineUsage) * 100, 0, 100);
+    timeSavedMinutes = usageSavedPercent > 0 ? (usageSavedPercent / 100) * 22 : 0;
+    return {
+      taskKey,
+      mode: "Measured Savings",
+      baselineUsage,
+      usageSavedPercent,
+      timeSavedMinutes,
+      moneySaved: null,
+      copy: "Measured Savings: MAS is comparing this task with your previous similar work."
+    };
+  }
+
+  baselineUsage = Number((decision.range.high * 0.95).toFixed(1));
+  usageSavedPercent = decision.decision === "GO"
+    ? 0
+    : clamp(((baselineUsage - decision.actualUsage) / baselineUsage) * 100, 0, 100);
+  timeSavedMinutes = usageSavedPercent > 0 ? (usageSavedPercent / 100) * 20 : 0;
+  return {
+    taskKey,
+    mode,
+    baselineUsage,
+    usageSavedPercent,
+    timeSavedMinutes,
+    moneySaved: null,
+    copy: "Estimated Savings: MAS is using a repeating-work estimate until it has more real history."
+  };
+}
+
+function renderResult(decision, savings) {
+  ui.advisorDecision.textContent = decision.decision;
+  ui.advisorActionLine.textContent = decision.advice;
+  ui.advisorReason.textContent = decision.reason;
+
+  ui.savingsMode.textContent = savings.mode;
+  ui.usageSavedDisplay.textContent =
+    savings.usageSavedPercent === null ? "—" : `${savings.usageSavedPercent.toFixed(0)}%`;
+  ui.timeSavedDisplay.textContent =
+    savings.timeSavedMinutes === null ? "—" : formatMinutes(savings.timeSavedMinutes);
+  ui.moneySavedDisplay.textContent = RELIABLE_COST_DATA_AVAILABLE ? "—" : "Unavailable";
+  ui.savingsText.textContent = savings.copy;
+  ui.savingsMethodNote.textContent =
+    savings.mode === "Measured Savings"
+      ? "Based on previous similar work. Money stays hidden until reliable cost data exists."
+      : "Estimated from likely without-MAS behavior. Money stays hidden until reliable cost data exists.";
+}
+
+function updateHistoryEntry(taskText, decision, savings) {
+  history = [
+    {
+      taskKey: savings.taskKey,
+      projectType: decision.projectType,
+      decision: decision.decision,
+      baselineUsage: savings.baselineUsage,
+      actualUsage: decision.actualUsage,
+      usageSavedPercent: savings.usageSavedPercent,
+      timestamp: new Date().toISOString(),
+    },
+    ...history,
+  ].slice(0, 20);
+}
+
+function askMas(forcedProjectType = null) {
+  const taskText = fields.taskInput.value.trim();
+  if (!taskText) {
+    ui.advisorDecision.textContent = "WAIT";
+    ui.advisorActionLine.textContent = "Tell MAS what you want to do first.";
+    ui.advisorReason.textContent = "A short natural-language task description is enough.";
+    return;
+  }
+
+  if (!forcedProjectType) {
+    const followup = needsFollowup(taskText);
+    if (followup) {
+      pendingTaskText = taskText;
+      ui.followupText.textContent = followup;
+      ui.followupBox.classList.remove("hidden");
+      return;
     }
   }
 
-  const savedUsage = Math.max(0, baselineUsage - actualUsage);
-  const savedUsagePercent = baselineUsage > 0 ? (savedUsage / baselineUsage) * 100 : 0;
-  const avoidedRuns = Math.max(0, savedUsage / Math.max(range.high / Math.max(range.plannedRuns + range.maxRetries, 1), 1));
-  const timeSavedMinutes = avoidedRuns * TIME_SAVED_PER_AVOIDED_RUN_MINUTES;
+  ui.followupBox.classList.add("hidden");
 
-  return {
-    savingsMode,
-    baselineLabel,
-    baselineUsage,
-    actualUsage,
-    savedUsage,
-    savedUsagePercent,
-    timeSavedMinutes,
-    moneySaved: null,
-  };
-}
+  const decision = buildDecision(taskText, forcedProjectType);
+  const savings = calculateSavings(taskText, decision);
 
-function renderHistory() {
-  if (decisionHistory.length === 0) {
-    ui.historyList.innerHTML = "<li>No project evidence yet.</li>";
-    return;
-  }
-
-  ui.historyList.innerHTML = decisionHistory
-    .slice(0, 6)
-    .map((entry) => {
-      const savingsLabel = entry.savingsMode === "Measured" ? "Measured" : "Estimated";
-      return `<li><strong>${entry.decision}</strong> · ${entry.projectType} · saved ${entry.savedUsagePercent.toFixed(0)}% · ${savingsLabel} · ${entry.timestamp}</li>`;
-    })
-    .join("");
-}
-
-function updateSavingsView(savings, decision, projectType) {
-  ui.savingsMode.textContent = savings.savingsMode;
-  ui.baselineDisplay.textContent = `${savings.baselineLabel} · ${savings.baselineUsage.toFixed(1)}%`;
-  ui.usageSavedDisplay.textContent =
-    savings.savedUsagePercent > 0
-      ? `${savings.savedUsagePercent.toFixed(0)}%`
-      : "0%";
-  ui.timeSavedDisplay.textContent =
-    savings.timeSavedMinutes > 0 ? formatMinutes(savings.timeSavedMinutes) : "0 min";
-  ui.moneySavedDisplay.textContent = RELIABLE_COST_DATA_AVAILABLE ? "—" : "Unavailable";
-
-  if (decision.decision === "GO") {
-    ui.savingsText.textContent =
-      "MAS says GO. This task fits your remaining AI resources, so there is little avoided waste to claim yet.";
-  } else if (decision.decision === "SAVE") {
-    ui.savingsText.textContent =
-      `${projectType === "repeating" ? "Repeating" : "This"} project can be done with less waste. MAS is helping you avoid extra AI usage and unnecessary retries.`;
-  } else {
-    ui.savingsText.textContent =
-      "MAS says WAIT. The main savings here come from not burning AI resources before reset.";
-  }
-
-  ui.savingsMethodNote.textContent =
-    savings.savingsMode === "Measured"
-      ? "Measured savings use previous runs of the same repeating project as the baseline. Money stays hidden until reliable cost data exists."
-      : "Estimated savings compare this task against a likely without-MAS baseline. Money stays hidden until reliable cost data exists.";
-}
-
-function analyzeTask() {
-  const taskText = fields.taskInput.value.trim();
-  const projectType = fields.projectType.value;
-  const snapshot = buildResourceSnapshot();
-
-  if (!taskText) {
-    ui.advisorPanel.dataset.status = "idle";
-    ui.advisorDecision.textContent = "WAIT";
-    ui.advisorReason.textContent = "Add a short project or task description first.";
-    ui.advisorActionLine.textContent = "Next step: describe the work you want to do.";
-    return;
-  }
-
-  const range = estimateTaskUsageRange(taskText, projectType);
-  const decision = buildDecision(snapshot, range, projectType, taskText);
-  const taskKey = normalizeTaskText(taskText);
-  const savings = calculateSavings(projectType, taskKey, range, decision);
-
-  ui.advisorPanel.dataset.status = decision.panelStatus;
-  ui.advisorDecision.textContent = decision.decision;
-  ui.advisorReason.textContent = decision.reason;
-  ui.advisorActionLine.textContent = decision.action;
-  ui.advisorRemaining.textContent =
-    decision.predictedRemaining === null ? "—" : formatPercent(decision.predictedRemaining);
-  ui.advisorRange.textContent = `${range.low.toFixed(1)}% – ${range.high.toFixed(1)}%`;
-  ui.advisorProvider.textContent = decision.providerRoute;
-  ui.advisorRoute.textContent = decision.route;
+  renderResult(decision, savings);
+  updateHistoryEntry(taskText, decision, savings);
+  saveState();
 
   trackAnalyticsEvent("advisor-used", "Advisor used");
   trackAnalyticsEvent(`decision-${decision.decision.toLowerCase()}`, `Decision ${decision.decision}`);
   trackAnalyticsEvent(
-    savings.savingsMode === "Measured" ? "savings-measured" : "savings-estimated",
-    `Savings ${savings.savingsMode}`
+    decision.projectType === "repeating" && savings.mode === "Measured Savings" ? "savings-measured" : "savings-estimated",
+    savings.mode
   );
-
-  decisionHistory = [
-    {
-      decision: decision.decision,
-      projectType,
-      taskKey,
-      baselineUsage: savings.baselineUsage,
-      actualUsage: savings.actualUsage,
-      savedUsagePercent: savings.savedUsagePercent,
-      savingsMode: savings.savingsMode,
-      timestamp: formatDateTime(new Date()),
-    },
-    ...decisionHistory,
-  ].slice(0, 12);
-
-  updateSavingsView(savings, decision, projectType);
-  renderHistory();
-  saveSession();
 }
 
-function refreshNow() {
-  lastUpdatedAt = new Date().toISOString();
-  updateResourcesView();
+function saveResourceEstimate() {
+  state.provider = fields.provider.value;
+  const remaining = parseNumber(fields.remainingPercent.value);
+  state.remainingPercent = Number.isFinite(remaining) ? clamp(remaining, 0, 100) : null;
+  state.resetAt = fields.resetAt.value || "";
+  state.lastUpdatedAt = new Date().toISOString();
+  renderResources();
+  ui.resourceEditor.classList.add("hidden");
 }
 
-function resetSession() {
-  Object.values(fields).forEach((field) => {
-    if (field.tagName === "SELECT") {
-      field.selectedIndex = 0;
-    } else {
-      field.value = "";
-    }
+function toggleResourceEditor() {
+  ui.resourceEditor.classList.toggle("hidden");
+}
+
+function adjustRemaining(delta) {
+  const current = Number.isFinite(state.remainingPercent) ? state.remainingPercent : 100;
+  state.remainingPercent = clamp(current + delta, 0, 100);
+  state.lastUpdatedAt = new Date().toISOString();
+  renderResources();
+}
+
+function resetResourcesToFull() {
+  state.remainingPercent = 100;
+  if (!state.resetAt) {
+    const next = new Date();
+    next.setDate(next.getDate() + DEFAULT_CYCLE_DAYS);
+    next.setHours(21, 30, 0, 0);
+    state.resetAt = `${next.getFullYear()}-${String(next.getMonth() + 1).padStart(2, "0")}-${String(next.getDate()).padStart(2, "0")}T${String(next.getHours()).padStart(2, "0")}:${String(next.getMinutes()).padStart(2, "0")}`;
+  }
+  state.lastUpdatedAt = new Date().toISOString();
+  renderResources();
+}
+
+function boot() {
+  loadState();
+  renderResources();
+  trackPageView();
+
+  ui.toggleResourceEditor.addEventListener("click", toggleResourceEditor);
+  ui.saveResourceEstimate.addEventListener("click", saveResourceEstimate);
+  ui.resourceMinusFive.addEventListener("click", () => adjustRemaining(-5));
+  ui.resourceResetFull.addEventListener("click", resetResourcesToFull);
+  ui.askMasButton.addEventListener("click", () => askMas());
+
+  ui.followupChoices.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (pendingTaskText) {
+        fields.taskInput.value = pendingTaskText;
+      }
+      askMas(button.dataset.choice);
+      pendingTaskText = "";
+    });
   });
 
-  lastUpdatedAt = null;
-  decisionHistory = [];
-  localStorage.removeItem(STORAGE_KEY);
-  localStorage.removeItem(HISTORY_KEY);
-
-  ui.advisorPanel.dataset.status = "idle";
-  ui.advisorDecision.textContent = "WAIT";
-  ui.advisorReason.textContent = "Add your AI resources and project details to get a real answer.";
-  ui.advisorActionLine.textContent = "Next step: update your resources first, then ask MAS again.";
-  ui.advisorRemaining.textContent = "—";
-  ui.advisorRange.textContent = "—";
-  ui.advisorProvider.textContent = "—";
-  ui.advisorRoute.textContent = "—";
-  ui.savingsMode.textContent = "Estimated";
-  ui.savingsText.textContent = "Savings will appear after MAS compares your project against a baseline.";
-  ui.baselineDisplay.textContent = "—";
-  ui.usageSavedDisplay.textContent = "—";
-  ui.timeSavedDisplay.textContent = "—";
-  ui.moneySavedDisplay.textContent = "Unavailable";
-  ui.savingsMethodNote.textContent = "Money is shown only when there is reliable cost data. This beta currently focuses on AI usage saved and time saved.";
-
-  renderHistory();
-  updateResourcesView();
+  if (countdownTimer) clearInterval(countdownTimer);
+  countdownTimer = setInterval(renderResources, 1000);
 }
 
-Object.values(fields).forEach((field) => {
-  field.addEventListener("input", updateResourcesView);
-  field.addEventListener("change", updateResourcesView);
-});
-
-ui.refreshButton.addEventListener("click", refreshNow);
-ui.resetButton.addEventListener("click", resetSession);
-ui.analyzeTaskButton.addEventListener("click", analyzeTask);
-ui.quickLogButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    fields.recentUsageDrop.value = button.dataset.drop;
-    fields.recentWindowHours.value = button.dataset.hours;
-    refreshNow();
-  });
-});
-
-loadSession();
-renderHistory();
-updateResourcesView();
-trackPageView();
-
-if (countdownTimer) {
-  clearInterval(countdownTimer);
-}
-countdownTimer = setInterval(updateCountdown, 1000);
+boot();
 
 </script>
 </body>
